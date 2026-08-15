@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - LuxeEstate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 4rem;
+        }
+
+        .about-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .text-center {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .text-center h2 {
+            font-size: 2.5rem;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+        }
+
+        /* Mission & Vision */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .mission-card {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+        }
+
+        .mission-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Why Choose Us */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .feature-item i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-top: 0.2rem;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-card {
+            background: var(--dark);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .team-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .team-info {
+            padding: 1.5rem;
+        }
+
+        .team-info h3 {
+            color: var(--text-heading);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-info p {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Stats */
+        .stats-section {
+            background: var(--secondary);
+            color: var(--background);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/#properties">Properties</a>
+                <a href="/agent-login.html">Agents</a>
+                <a href="/about.html" class="active">About</a>
+                <a href="/admin-login.html">Admin Login</a>
+            </div>
+            <div id="auth-buttons">
+                <a href="/login.html" class="btn">Log In</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="about-hero">
+        <div>
+            <h1>About LuxeEstate</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Redefining luxury real estate in India with
+                unparalleled service and exclusive properties.</p>
+        </div>
+    </div>
+
+    <main>
+        <!-- Intro Section -->
+        <section class="section-container">
+            <div class="text-center">
+                <h2>Our Story</h2>
+                <p style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: var(--text);">
+                    Founded in 2010, LuxeEstate began with a simple mission: to connect discerning clients with the most
+                    exceptional properties in India. Over the last decade, we have established ourselves as the premier
+                    luxury real estate agency, known for our integrity, market expertise, and personalized service.
+                    Whether
+                    you are looking for a sea-facing apartment in Mumbai or a quiet villa in Goa, we make your dream
+                    home a
+                    reality.
+                </p>
+            </div>
+        </section>
+
+        <!-- Mission & Vision -->
+        <section class="section-container" style="background: rgba(255,255,255,0.02);">
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <i class="fas fa-bullseye mission-icon"></i>
+                    <h3>Our Mission</h3>
+                    <p style="color: var(--text); margin-top: 1rem;">To provide an exceptional real estate experience by
+                        prioritizing our clients' needs and delivering results with transparency and trust.</p>
+                </div>
+                <div class="mission-card">
+                    <i class="fas fa-eye mission-icon"></i>
+                    <h3>Our Vision</h3>
+                    <p style="color: var(--text); margin-top: 1rem;">To be the most trusted and admired luxury real
+                        estate
+                        brand in India, setting new standards for excellence in the industry.</p>
+                </div>
+                <div class="mission-card">
+                    <i class="fas fa-gem mission-icon"></i>
+                    <h3>Our Values</h3>
+                    <p style="color: var(--text); margin-top: 1rem;">Integrity, Excellence, Innovation, and unparalleled
+                        Commitment to our clients are the pillars of our organization.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="section-container">
+            <div class="text-center">
+                <h2>Why Choose Us</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h4 style="color: var(--text-heading); margin-bottom: 0.5rem;">Exclusive Listings</h4>
+                        <p style="color: var(--text); font-size: 0.9rem;">Access to off-market properties and premium
+                            homes
+                            you won't find anywhere else.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h4 style="color: var(--text-heading); margin-bottom: 0.5rem;">Expert Guidance</h4>
+                        <p style="color: var(--text); font-size: 0.9rem;">Our team of seasoned professionals guides you
+                            through every step of the buying process.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h4 style="color: var(--text-heading); margin-bottom: 0.5rem;">Legal Assistance</h4>
+                        <p style="color: var(--text); font-size: 0.9rem;">Comprehensive legal support to ensure smooth
+                            and
+                            hassle-free transactions.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h4 style="color: var(--text-heading); margin-bottom: 0.5rem;">After-Sales Support</h4>
+                        <p style="color: var(--text); font-size: 0.9rem;">We continue to support you even after the keys
+                            are
+                            in your hand.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section-container">
+            <div class="text-center">
+                <h2>Meet Our Team</h2>
+                <p style="color: var(--text);">The experts behind your dream home.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Agent" class="team-img">
+                    <div class="team-info">
+                        <h3>Rajesh Sharma</h3>
+                        <p>Senior Realtor</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Agent" class="team-img">
+                    <div class="team-info">
+                        <h3>Priya Venkatesh</h3>
+                        <p>Luxury Specialist</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Agent" class="team-img">
+                    <div class="team-info">
+                        <h3>Vikram Singh</h3>
+                        <p>Commercial Real Estate</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div>
+                    <div class="stat-number" data-target="15">0+</div>
+                    <p>Years of Experience</p>
+                </div>
+                <div>
+                    <div class="stat-number" data-target="500">0+</div>
+                    <p>Happy Families</p>
+                </div>
+                <div>
+                    <div class="stat-number" data-target="50">0+</div>
+                    <p>Awards Won</p>
+                </div>
+                <div>
+                    <div class="stat-number" data-target="1200">0+</div>
+                    <p>Properties Sold</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+        <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+                <p>Premium real estate services for the modern world.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#properties">Properties</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/agent-login.html">Agent Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>contact@luxeestate.com</p>
+                <p>+1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 LuxeEstate. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Stats Animation
+        const counters = document.querySelectorAll('.stat-number');
+        const speed = 200;
+
+        const animateStats = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace('+', '');
+
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc) + '+';
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target + '+';
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        // Trigger animation when stats section is in view
+        let animated = false;
+        const statsSection = document.querySelector('.stats-section');
+        window.addEventListener('scroll', () => {
+            if (!animated && window.scrollY + window.innerHeight > statsSection.offsetTop) {
+                animateStats();
+                animated = true;
+            }
+        });
+    </script>
+</body>
+
+</html>

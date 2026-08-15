@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Portal - Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="glass-panel auth-box" style="max-width: 500px;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--white);">Agent Registration</h2>
+                <p style="color: var(--secondary);">Join our network of premium agents</p>
+            </div>
+            <form id="agent-signup-form">
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Full Name</label>
+                    <input type="text" id="name" placeholder="Required for profile" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Unique username" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="name@agency.com" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+91 98765 43210" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>License Number</label>
+                    <input type="text" id="license" placeholder="Real Estate License ID" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-fill" style="width: 100%; justify-content: center;">Create Agent
+                    Account</button>
+                <p id="error-msg" style="color: #ff6b6b; text-align: center; margin-top: 1rem; display: none;"></p>
+            </form>
+            <div style="text-align: center; margin-top: 1.5rem; color: var(--text);">
+                Already have an account? <a href="/agent-login.html" style="color: var(--secondary);">Agent Login</a>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="/" style="color: var(--text); font-size: 0.9rem;">Back to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('agent-signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const errorMsg = document.getElementById('error-msg');
+
+            const formData = {
+                role: 'agent',
+                name: document.getElementById('name').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                licenseNumber: document.getElementById('license').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                btn.textContent = 'Registering...';
+                const res = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    if (data.isPending) {
+                        btn.textContent = 'Registration Expected';
+                        btn.style.backgroundColor = '#2ecc71';
+                        errorMsg.style.color = '#2ecc71';
+                        errorMsg.textContent = data.message;
+                        errorMsg.style.display = 'block';
+                    } else {
+                        localStorage.setItem('agentToken', data.token);
+                        localStorage.setItem('agentName', data.username);
+                        localStorage.setItem('agentIdString', data.agentIdString);
+                        window.location.href = '/agent-dashboard.html';
+                    }
+                } else {
+                    throw new Error(data.error || 'Registration failed');
+                }
+            } catch (err) {
+                errorMsg.style.color = '#ff6b6b';
+                errorMsg.textContent = err.message;
+                errorMsg.style.display = 'block';
+                btn.textContent = 'Create Agent Account';
+            }
+        });
+    </script>
+</body>
+
+</html>

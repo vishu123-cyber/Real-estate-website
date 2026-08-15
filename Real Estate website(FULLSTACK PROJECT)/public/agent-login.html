@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Portal - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="glass-panel auth-box">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--white);">Agent Login</h2>
+                <p style="color: var(--secondary);">Access your dashboard</p>
+            </div>
+            <form id="agent-login-form">
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="name@agency.com" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-fill" style="width: 100%; justify-content: center;">Sign
+                    In</button>
+                <p id="error-msg" style="color: #ff6b6b; text-align: center; margin-top: 1rem; display: none;"></p>
+            </form>
+            <div style="text-align: center; margin-top: 1.5rem; color: var(--text);">
+                New agent? <a href="/agent-signup.html" style="color: var(--secondary);">Register Here</a>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="/" style="color: var(--text); font-size: 0.9rem;">Back to Website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('agent-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const errorMsg = document.getElementById('error-msg');
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                btn.textContent = 'Signing in...';
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    if (data.role !== 'agent' && data.role !== 'admin') {
+                        throw new Error('Unauthorized access. Agent account required.');
+                    }
+                    localStorage.setItem('agentToken', data.token);
+                    localStorage.setItem('agentName', data.username);
+                    localStorage.setItem('agentIdString', data.agentIdString);
+                    window.location.href = '/agent-dashboard.html';
+                } else {
+                    throw new Error(data.error || 'Login failed');
+                }
+            } catch (err) {
+                errorMsg.textContent = err.message;
+                errorMsg.style.display = 'block';
+                btn.textContent = 'Sign In';
+            }
+        });
+    </script>
+</body>
+
+</html>

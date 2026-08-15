@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - LuxeEstate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .message-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .message-card {
+            background: var(--dark);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: stretch;
+            transition: border-color 0.3s;
+        }
+
+        .message-card:hover {
+            border-color: var(--secondary);
+        }
+
+        .message-info h4 {
+            color: var(--text-heading);
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .message-meta {
+            color: var(--secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .message-body {
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: 1px solid #ff4d4d;
+            color: #ff4d4d;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--text);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+        }
+
+        .admin-prop-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+
+        @media (min-width: 768px) {
+            .message-card {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .card-content-wrapper {
+                flex-direction: row !important;
+                align-items: center !important;
+            }
+            .admin-prop-img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">Luxe<span>Estate</span> Admin</div>
+            <button id="logout-btn" class="logout-btn">Logout</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="tabs" style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+            <button id="tab-properties" class="btn btn-fill" style="padding: 0.5rem 1rem;">Properties</button>
+            <button id="tab-agents" class="logout-btn" style="padding: 0.5rem 1rem;">Agents List</button>
+            <button id="tab-pending" class="logout-btn" style="padding: 0.5rem 1rem;">Pending Verification</button>
+        </div>
+
+        <div id="properties-view">
+            <div class="dashboard-header" style="border-bottom: none; padding-bottom: 0;">
+                <h3>All Properties</h3>
+                <span class="badge" id="prop-count">0 Properties</span>
+            </div>
+            <div id="loading-props" class="loading">Loading properties...</div>
+            <div id="property-list" class="message-grid"></div>
+        </div>
+
+        <div id="agents-view" style="display: none;">
+            <div class="dashboard-header" style="border-bottom: none; padding-bottom: 0;">
+                <h3>Registered Agents</h3>
+                <span class="badge" id="agent-count">0 Agents</span>
+            </div>
+            <div id="loading-agents" class="loading">Loading agents...</div>
+            <div id="agent-list" class="message-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+        </div>
+
+        <div id="pending-view" style="display: none;">
+            <div class="dashboard-header" style="border-bottom: none; padding-bottom: 0;">
+                <h3>Pending Verifications</h3>
+                <span class="badge" id="pending-count">0 Pending</span>
+            </div>
+            <div id="loading-pending" class="loading">Loading pending agents...</div>
+            <div id="pending-list" class="message-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+        </div>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

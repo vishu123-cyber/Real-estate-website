@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details - LuxeEstate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/#properties">Properties</a>
+                <a href="/agent-login.html">Agents</a>
+                <a href="/about.html">About</a>
+                <a href="/admin-login.html">Admin Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="property-detail">
+        <div id="loading" class="loading">Loading property details...</div>
+
+        <div id="property-content" style="display: none;">
+            <div class="detail-header">
+                <a href="/" style="color: var(--secondary); margin-bottom: 1rem; display: inline-block;">&larr; Back to
+                    Listings</a>
+                <h1 id="prop-title">Property Title</h1>
+                <p id="prop-location" style="color: var(--text-light); font-size: 1.1rem;"><i
+                        class="fas fa-map-marker-alt"></i> Location</p>
+            </div>
+
+            <div class="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                    <!-- Images injected here -->
+                </div>
+                <button class="carousel-btn prev-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-indicators" id="carousel-indicators"></div>
+            </div>
+
+            <div class="detail-grid">
+                <div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <span class="badge" id="prop-type">Type</span>
+                        <div class="card-price" id="prop-price">$0</div>
+                    </div>
+
+                    <div class="card-features" style="margin-bottom: 2rem;">
+                        <span class="feature"><i class="fas fa-bed"></i> 4 Beds</span>
+                        <span class="feature"><i class="fas fa-bath"></i> 3 Baths</span>
+                        <span class="feature"><i class="fas fa-ruler-combined"></i> 2,500 sqft</span>
+                    </div>
+
+                    <h3>Description</h3>
+                    <p id="prop-desc" style="margin-bottom: 2rem; color: #ccc; line-height: 1.8;">
+                        Property description goes here.
+                    </p>
+
+                    <h3>Features</h3>
+                    <ul style="list-style: disc; margin-left: 1.5rem; color: #ccc; margin-bottom: 2rem;">
+                        <li>Modern Kitchen</li>
+                        <li>High Ceilings</li>
+                        <li>Smart Home System</li>
+                        <li>Private Garden</li>
+                    </ul>
+                </div>
+
+                <aside class="property-sidebar">
+                    <div class="agent-box">
+                        <h3>Contact Agent</h3>
+                        <p style="margin-bottom: 1.5rem; color: #aaa;">Interested in this property? Send us a message.
+                        </p>
+
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="contact-name" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="contact-email" placeholder="Your Email">
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea id="contact-message" rows="4"
+                                placeholder="I'm interested in this property..."></textarea>
+                        </div>
+                        <button id="contact-btn" class="btn" style="width: 100%;">Send Message</button>
+                        <p id="contact-status" style="margin-top: 1rem; text-align: center; font-size: 0.9rem;"></p>
+
+                        <div
+                            style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); text-align: center;">
+                            <p id="agent-contact" style="font-weight: 600; color: var(--secondary);">Agent Contact</p>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Directions Button -->
+                    <div class="agent-box" style="margin-top: 2rem; padding: 2rem; text-align: center;">
+                        <h3 style="margin-bottom: 1rem;">Location</h3>
+                        <p id="map-location-text" style="color: #aaa; margin-bottom: 1.5rem;"></p>
+                        <button id="get-directions-btn" class="btn" style="width: 100%;">
+                            <i class="fas fa-map-marked-alt"></i> Get Directions
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+        <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+                <p>Premium real estate services for the modern world.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#properties">Properties</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/agent-login.html">Agent Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>contact@luxeestate.com</p>
+                <p>+1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 LuxeEstate. All rights reserved.
+        </div>
+    </footer>
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+
+            if (!id) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/properties/${id}`);
+                if (!response.ok) throw new Error('Property not found');
+                const property = await response.json();
+
+                document.getElementById('prop-title').textContent = property.title;
+                document.getElementById('prop-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${property.location}`;
+
+                // Location & Directions Logic
+                // Location & Directions Logic
+                const locationText = document.getElementById('map-location-text');
+                const googleMapsQuery = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.location)}`;
+
+                // Make location text clickable
+                locationText.innerHTML = `<a href="${googleMapsQuery}" target="_blank" style="color: var(--secondary); text-decoration: underline; cursor: pointer;">${property.location}</a>`;
+
+                const dirBtn = document.getElementById('get-directions-btn');
+                dirBtn.style.display = 'block'; // Ensure visible
+
+                dirBtn.addEventListener('click', () => {
+                    if (property.coordinates && property.coordinates.lat) {
+                        // If coordinates exist, try to get specific directions
+                        if (!navigator.geolocation) {
+                            window.open(googleMapsQuery, '_blank');
+                            return;
+                        }
+
+                        dirBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating...';
+
+                        navigator.geolocation.getCurrentPosition(position => {
+                            const userLat = position.coords.latitude;
+                            const userLng = position.coords.longitude;
+                            const destLat = property.coordinates.lat;
+                            const destLng = property.coordinates.lng;
+
+                            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=driving`;
+                            window.open(mapsUrl, '_blank');
+                            dirBtn.innerHTML = '<i class="fas fa-map-marked-alt"></i> Get Directions';
+
+                        }, error => {
+                            // Fallback to general search on error
+                            window.open(googleMapsQuery, '_blank');
+                            dirBtn.innerHTML = '<i class="fas fa-map-marked-alt"></i> Get Directions';
+                        });
+                    } else {
+                        // Fallback for location string only
+                        window.open(googleMapsQuery, '_blank');
+                    }
+                });
+
+                // Carousel Logic
+                const track = document.getElementById('carousel-track');
+                const indicators = document.getElementById('carousel-indicators');
+                const images = property.images && property.images.length > 0 ? property.images : [property.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa'];
+
+                track.innerHTML = images.map((img, index) => `
+                    <div class="carousel-slide">
+                        <img src="${img}" alt="${property.title} - Image ${index + 1}" onerror="this.onerror=null; console.error('Detail image failed:', this.src); this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';">
+                    </div>
+                `).join('');
+
+                indicators.innerHTML = images.map((_, index) => `
+                    <div class="indicator ${index === 0 ? 'active' : ''}" data-index="${index}"></div>
+                `).join('');
+
+                let currentIndex = 0;
+                const updateCarousel = () => {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    document.querySelectorAll('.indicator').forEach((ind, i) => {
+                        ind.classList.toggle('active', i === currentIndex);
+                    });
+                };
+
+                document.getElementById('nextBtn').addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % images.length;
+                    updateCarousel();
+                });
+
+                document.getElementById('prevBtn').addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    updateCarousel();
+                });
+
+                indicators.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('indicator')) {
+                        currentIndex = parseInt(e.target.dataset.index);
+                        updateCarousel();
+                    }
+                });
+
+                document.getElementById('prop-type').textContent = property.type;
+                document.getElementById('prop-price').textContent = '₹' + property.price.toLocaleString('en-IN');
+                document.getElementById('prop-desc').textContent = property.description;
+                document.getElementById('agent-contact').textContent = property.agentContact || 'Call +91 98765 43210';
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('property-content').style.display = 'block';
+
+                // Handle contact form
+                document.getElementById('contact-btn').addEventListener('click', async () => {
+                    const name = document.getElementById('contact-name').value;
+                    const email = document.getElementById('contact-email').value;
+                    const message = document.getElementById('contact-message').value;
+                    const status = document.getElementById('contact-status');
+
+                    if (!name || !email || !message) {
+                        status.textContent = "Please fill in all fields.";
+                        status.style.color = "red";
+                        return;
+                    }
+
+                    status.textContent = "Sending...";
+                    status.style.color = "#777";
+
+                    try {
+                        const res = await fetch('/api/properties/messages', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, message, propertyId: id })
+                        });
+
+                        if (res.ok) {
+                            status.textContent = "Message sent successfully!";
+                            status.style.color = "green";
+                            document.getElementById('contact-name').value = '';
+                            document.getElementById('contact-email').value = '';
+                            document.getElementById('contact-message').value = '';
+                        } else {
+                            throw new Error('Failed to send');
+                        }
+                    } catch (error) {
+                        status.textContent = "Error sending message. Try again.";
+                        status.style.color = "red";
+                    }
+                });
+
+
+
+            } catch (error) {
+                document.getElementById('loading').textContent = 'Error loading property details.';
+                console.error(error);
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

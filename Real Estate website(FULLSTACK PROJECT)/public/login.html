@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LuxeEstate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+            <a href="/" class="btn-outline">Back to Home</a>
+        </nav>
+    </header>
+
+    <div class="auth-container">
+        <div class="glass-panel auth-box">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+                <p style="color: var(--text);">Sign in to access your saved properties</p>
+            </div>
+            <form id="login-form">
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="name@example.com" required>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-fill" style="width: 100%; justify-content: center;">Sign
+                    In</button>
+                <p id="error-msg" style="color: #ff6b6b; text-align: center; margin-top: 1rem; display: none;"></p>
+            </form>
+            <div style="text-align: center; margin-top: 2rem; font-size: 0.9rem;">
+                Don't have an account? <a href="/signup.html" style="color: var(--secondary);">Create one</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const submitBtn = e.target.querySelector('button');
+
+            try {
+                submitBtn.textContent = 'Signing in...';
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('userToken', data.token);
+                    localStorage.setItem('username', data.username);
+                    window.location.href = '/';
+                } else {
+                    errorMsg.textContent = data.error || 'Login failed';
+                    errorMsg.style.display = 'block';
+                    submitBtn.textContent = 'Sign In';
+                }
+            } catch (err) {
+                console.error(err);
+                errorMsg.textContent = 'An error occurred. Please try again.';
+                errorMsg.style.display = 'block';
+                submitBtn.textContent = 'Sign In';
+            }
+        });
+    </script>
+</body>
+
+</html>

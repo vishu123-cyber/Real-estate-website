@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxeEstate - Premium Real Estate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/#properties">Properties</a>
+                <a href="/agent-login.html">Agents</a>
+                <a href="/about.html">About</a>
+                <a href="/admin-login.html">Admin Login</a>
+            </div>
+            <div id="auth-buttons">
+                <!-- Populated by JS -->
+                <a href="/login.html" class="btn">Log In</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Find Your Dream Home</h1>
+        <p>Discover a curated selection of the finest properties in the most desirable locations.</p>
+
+        <form id="search-form" class="search-container">
+            <div class="search-field">
+                <input type="text" id="location" placeholder="City, e.g. Mumbai, Bangalore">
+            </div>
+            <div class="search-field">
+                <select id="type">
+                    <option value="">Any Type</option>
+                    <option value="House">House</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Condo">Condo</option>
+                    <option value="Villa">Villa</option>
+                </select>
+            </div>
+            <div class="search-field">
+                <select id="price">
+                    <option value="">Max Price</option>
+                    <option value="5000000">₹50 Lakhs</option>
+                    <option value="10000000">₹1 Crore</option>
+                    <option value="50000000">₹5 Crores</option>
+                    <option value="100000000">₹10 Crores</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </section>
+
+    <main class="properties-section" id="properties">
+        <div class="section-header">
+            <div>
+                <h2>Featured Properties</h2>
+            </div>
+        </div>
+
+        <div id="property-grid" class="grid">
+            <!-- Properties will be injected here -->
+        </div>
+    </main>
+
+        <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="logo" style="display: flex; align-items: center;">
+                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
+                Luxe<span style="color: var(--secondary);">Estate</span>
+            </div>
+                <p>Premium real estate services for the modern world.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#properties">Properties</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/agent-login.html">Agent Login</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>contact@luxeestate.com</p>
+                <p>+1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 LuxeEstate. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
