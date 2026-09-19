@@ -1,16 +1,13 @@
-const mongoose = require("mongoose");
+const { connectDatabase, disconnectDatabase } = require('./config/database');
 const Property = require("./models/Property");
-//connects database
-mongoose.connect("mongodb://127.0.0.1:27017/realestate")
+connectDatabase()
     .then(async () => {
         console.log("MongoDB Connected");
-
-        // Clear existing data
-        await Property.deleteMany({});
 
         const sampleProperties = [
             {
                 title: "Luxury Sea Facing Apartment",
+                beds: 4, baths: 5,
                 location: "Marine Drive, Mumbai",
                 price: 150000000,
                 type: "Apartment",
@@ -26,6 +23,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/realestate")
             },
             {
                 title: "Modern Villa with Private Pool",
+                beds: 5, baths: 6,
                 location: "Whitefield, Bangalore",
                 price: 85000000,
                 type: "Villa",
@@ -41,6 +39,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/realestate")
             },
             {
                 title: "Cozy Hill Station Cottage",
+                beds: 3, baths: 2,
                 location: "Ooty, Tamil Nadu",
                 price: 35000000,
                 type: "House",
@@ -56,6 +55,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/realestate")
             },
             {
                 title: "High-Rise Apartment in Cyber City",
+                beds: 3, baths: 3,
                 location: "Gurgaon, Haryana",
                 price: 55000000,
                 type: "Apartment",
@@ -71,6 +71,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/realestate")
             },
             {
                 title: "Spacious Family Home",
+                beds: 5, baths: 4,
                 location: "Banjara Hills, Hyderabad",
                 price: 120000000,
                 type: "House",
@@ -86,6 +87,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/realestate")
             },
             {
                 title: "Premium Sea View Condo",
+                beds: 3, baths: 3,
                 location: "Besant Nagar, Chennai",
                 price: 45000000,
                 type: "Condo",
@@ -112,11 +114,18 @@ mongoose.connect("mongodb://127.0.0.1:27017/realestate")
             ]
         }));
 
-        await Property.insertMany(updatedProperties);
-        console.log("Data Seeded");
-        process.exit();
+        // Add missing samples only: never delete or overwrite existing listings.
+        const result = await Property.bulkWrite(updatedProperties.map(property => ({
+            updateOne: {
+                filter: { title: property.title, location: property.location },
+                update: { $setOnInsert: property },
+                upsert: true
+            }
+        })));
+        console.log(`Added ${result.upsertedCount} sample properties. Existing listings were preserved.`);
     })
     .catch(err => {
-        console.log(err);
-        process.exit(1);
-    });
+        console.error('Could not seed sample properties:', err.name);
+        process.exitCode = 1;
+    })
+    .finally(disconnectDatabase);

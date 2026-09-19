@@ -4,89 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - LuxeEstate</title>
+    <meta name="description" content="Create your LuxeEstate account to save homes you love.">
+    <title>Create an account | LuxeEstate</title>
+    <style>html{background:#04111b;color-scheme:dark}body{margin:0;background:#071a27;color:#b8c8d0;font-family:Manrope,Inter,system-ui,sans-serif}</style>
     <link rel="stylesheet" href="styles.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body>
+<body class="auth-page">
     <header>
-        <nav>
-            <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
-            </div>
-            <a href="/" class="btn-outline">Back to Home</a>
+        <nav aria-label="Authentication navigation">
+            <a class="logo" href="/" aria-label="LuxeEstate home"><img src="/logo.png" alt="" aria-hidden="true"><span>Luxe<span>Estate</span></span></a>
+            <a href="/" class="back-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to homes</a>
         </nav>
     </header>
 
-    <div class="auth-container">
-        <div class="glass-panel auth-box">
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Create Account</h2>
-                <p style="color: var(--text);">Join us to save your favorite properties</p>
+    <main class="auth-container">
+        <section class="auth-intro">
+            <p class="eyebrow"><i class="fas fa-house-heart" aria-hidden="true"></i> Save what feels right</p>
+            <h1>Your next home starts with a shortlist.</h1>
+            <p>Create a free account to save the listings you love and return to them whenever inspiration strikes.</p>
+            <ul class="auth-benefits">
+                <li><i class="fas fa-heart" aria-hidden="true"></i> Save and compare homes at your own pace</li>
+                <li><i class="fas fa-lock" aria-hidden="true"></i> A simple, secure account with no pressure</li>
+            </ul>
+        </section>
+
+        <section class="glass-panel auth-box auth-card" aria-labelledby="signup-heading">
+            <div class="auth-heading">
+                <p class="section-kicker">Create your account</p>
+                <h2 id="signup-heading">Start your shortlist</h2>
+                <p>It takes less than a minute.</p>
             </div>
             <form id="signup-form">
-                <div style="margin-bottom: 1.5rem;">
-                    <label>Full Name</label>
-                    <input type="text" id="username" placeholder="John Doe" required>
+                <div class="form-group">
+                    <label for="username">Your name</label>
+                    <input type="text" id="username" autocomplete="name" placeholder="How should we address you?" required>
                 </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="name@example.com" required>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" autocomplete="email" placeholder="you@example.com" required>
                 </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="Create a password" required>
+                <div class="form-group">
+                    <label for="password">Create a password</label>
+                    <input type="password" id="password" placeholder="At least 8 characters" required>
                 </div>
-                <button type="submit" class="btn btn-fill" style="width: 100%; justify-content: center;">Create
-                    Account</button>
-                <p id="error-msg" style="color: #ff6b6b; text-align: center; margin-top: 1rem; display: none;"></p>
+                <button type="submit" class="btn btn-fill">Create account <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                <p id="error-msg" aria-live="polite"></p>
             </form>
-            <div style="text-align: center; margin-top: 2rem; font-size: 0.9rem;">
-                Already have an account? <a href="/login.html" style="color: var(--secondary);">Sign In</a>
-            </div>
-        </div>
-    </div>
+            <p class="auth-footer">Already have an account? <a href="/login.html">Sign in</a></p>
+        </section>
+    </main>
 
-    <script>
-        document.getElementById('signup-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('error-msg');
-            const submitBtn = e.target.querySelector('button');
-
-            try {
-                submitBtn.textContent = 'Creating Account...';
-                const res = await fetch('/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
-                });
-                const data = await res.json();
-
-                if (res.ok) {
-                    localStorage.setItem('userToken', data.token);
-                    localStorage.setItem('username', data.username);
-                    window.location.href = '/';
-                } else {
-                    errorMsg.textContent = data.error || 'Signup failed';
-                    errorMsg.style.display = 'block';
-                    submitBtn.textContent = 'Create Account';
-                }
-            } catch (err) {
-                console.error(err);
-                errorMsg.textContent = 'An error occurred. Please try again.';
-                errorMsg.style.display = 'block';
-                submitBtn.textContent = 'Create Account';
-            }
-        });
-    </script>
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
 </body>
 
 </html>

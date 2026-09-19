@@ -1,0 +1,11 @@
+{
+  "name": "real-estate-workspace",
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix \"Real Estate website(FULLSTACK PROJECT)\" run setup",
+    "start": "npm --prefix \"Real Estate website(FULLSTACK PROJECT)\" start",
+    "dev": "npm --prefix \"Real Estate website(FULLSTACK PROJECT)\" run dev",
+    "test": "npm --prefix \"Real Estate website(FULLSTACK PROJECT)\" test",
+    "seed": "npm --prefix \"Real Estate website(FULLSTACK PROJECT)\" run seed"
+  }
+}

@@ -4,172 +4,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Favorites - LuxeEstate</title>
+    <meta name="description" content="Your saved LuxeEstate properties.">
+    <title>Saved homes | LuxeEstate</title>
+    <style>html{background:#04111b;color-scheme:dark}body{margin:0;background:#071a27;color:#b8c8d0;font-family:Manrope,Inter,system-ui,sans-serif}</style>
     <link rel="stylesheet" href="styles.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .favorites-container {
-            max-width: 1400px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-            min-height: 60vh;
-        }
-
-        .section-header {
-            margin-bottom: 3rem;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem;
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: var(--radius);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-    </style>
 </head>
 
 <body>
     <header>
-        <nav>
-            <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
-            </div>
-            <div class="nav-links">
+        <nav aria-label="Main navigation">
+            <a class="logo" href="/" aria-label="LuxeEstate home"><img src="/logo.png" alt="" aria-hidden="true"><span>Luxe<span>Estate</span></span></a>
+            <button class="hamburger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+            <div class="nav-links" id="main-navigation">
                 <a href="/">Home</a>
                 <a href="/#properties">Properties</a>
                 <a href="/agent-login.html">Agents</a>
                 <a href="/about.html">About</a>
-                <a href="/admin-login.html">Admin Login</a>
+                <a href="/admin-login.html">Admin</a>
             </div>
-            <div id="auth-buttons">
-                <!-- Injected by JS -->
-            </div>
+            <div id="auth-buttons"></div>
         </nav>
     </header>
 
     <main class="favorites-container">
-        <div class="section-header">
-            <h2>My Saved Properties</h2>
-            <p>Your curated list of potential dream homes</p>
-        </div>
+        <section class="favorites-hero">
+            <div>
+                <p class="section-kicker">Your shortlist</p>
+                <h1>Homes worth coming back to.</h1>
+                <p>Keep your favourite spaces together while you decide what feels right.</p>
+            </div>
+            <div class="saved-count"><i class="fas fa-heart" aria-hidden="true"></i><span>Saved homes</span></div>
+        </section>
 
-        <div id="loading" class="loading">Loading favorites...</div>
-        <div id="favorites-grid" class="grid">
-            <!-- Properties injected here -->
+        <div id="loading" class="loading">Loading your saved homes...</div>
+        <div id="favorites-grid" class="grid" aria-live="polite">
+            <!-- Properties are injected here -->
         </div>
     </main>
 
-        <footer>
+    <footer class="site-footer" id="site-footer" aria-label="Site footer">
         <div class="footer-grid">
-            <div>
-                <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
+            <div class="footer-brand">
+                <a class="logo" href="/" aria-label="LuxeEstate home"><img src="/logo.png" alt="" aria-hidden="true"><span>Luxe<span>Estate</span></span></a>
+                <p>Considered real estate advice for your next chapter.</p>
+                <a class="footer-cta" href="/#properties">View available homes <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
-                <p>Premium real estate services for the modern world.</p>
-            </div>
-            <div>
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/#properties">Properties</a></li>
-                    <li><a href="/about.html">About</a></li>
-                    <li><a href="/agent-login.html">Agent Login</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4>Contact</h4>
-                <p>contact@luxeestate.com</p>
-                <p>+1 (555) 123-4567</p>
-            </div>
+            <nav class="footer-column" aria-label="Explore LuxeEstate"><h4>Explore</h4><ul><li><a href="/#properties">Properties</a></li><li><a href="/favorites.html">Saved homes</a></li><li><a href="/about.html">Our approach</a></li><li><a href="/agent-login.html">For agents</a></li></ul></nav>
+            <nav class="footer-column" aria-label="Account links"><h4>Your account</h4><ul><li><a href="/login.html">Log in</a></li><li><a href="/signup.html">Create an account</a></li><li><a href="/agent-login.html">Agent portal</a></li><li><a href="/admin-login.html">Admin sign in</a></li></ul></nav>
+            <div class="footer-contact"><h4>Get in touch</h4><p class="footer-contact__label">A considered next step starts with a conversation.</p><a class="footer-contact__email" href="mailto:contact@luxeestate.com"><i class="fas fa-envelope" aria-hidden="true"></i> contact@luxeestate.com</a><p class="footer-hours"><i class="fas fa-clock" aria-hidden="true"></i> Mon–Sat, 9:00–18:00</p></div>
         </div>
-        <div class="footer-bottom">
-            &copy; 2024 LuxeEstate. All rights reserved.
-        </div>
+        <div class="footer-bottom"><span>&copy; 2026 LuxeEstate. Made for better moves.</span><a href="/">Return home <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
     </footer>
 
-    <script src="app.js"></script>
-    <script>
-        // Specific logic for favorites page
-        document.addEventListener('DOMContentLoaded', async () => {
-            const token = localStorage.getItem('userToken');
-            if (!token) {
-                window.location.href = '/login.html';
-                return;
-            }
-
-            const grid = document.getElementById('favorites-grid');
-            const loading = document.getElementById('loading');
-
-            try {
-                const res = await fetch('/api/favorites', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (res.status === 401) {
-                    localStorage.removeItem('userToken');
-                    window.location.href = '/login.html';
-                    return;
-                }
-
-                const properties = await res.json();
-                loading.style.display = 'none';
-
-                if (properties.length === 0) {
-                    grid.innerHTML = `
-                        <div class="empty-state" style="grid-column: 1/-1;">
-                            <i class="far fa-heart"></i>
-                            <h3>No favorites yet</h3>
-                            <p style="margin-bottom: 1.5rem;">Start exploring properties and save the ones you love.</p>
-                            <a href="/" class="btn">Browse Properties</a>
-                        </div>
-                    `;
-                    return;
-                }
-
-                // Render properties (reusing card logic would be ideal, but duplicating for simplicity/independence here or checking if app.js exposes a render function)
-                // Since app.js is included, we can try to use its logic if we refactor, but for now I'll implement render here to ensure it works.
-
-                grid.innerHTML = properties.map(property => `
-                    <div class="property-card" onclick="location.href='property.html?id=${property._id}'" style="cursor: pointer;">
-                        <div style="position: relative;">
-                            <img src="${property.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${property.title}" class="card-image">
-                            <button onclick="event.stopPropagation(); window.toggleFavorite('${property._id}', this)" class="btn-fill" style="position: absolute; top: 1rem; right: 1rem; padding: 0.5rem; min-width: auto; border-radius: 50%;">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-price">₹${property.price.toLocaleString('en-IN')}</div>
-                            <h3 class="card-title">${property.title}</h3>
-                            <div class="card-location">
-                                <i class="fas fa-map-marker-alt"></i> ${property.location}
-                            </div>
-                            <div class="card-features">
-                                <span class="feature"><i class="fas fa-bed"></i> 4 Beds</span>
-                                <span class="feature"><i class="fas fa-bath"></i> 3 Baths</span>
-                                <span class="feature"><i class="fas fa-ruler-combined"></i> 2,500 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-
-            } catch (error) {
-                console.error(error);
-                loading.textContent = "Error loading favorites.";
-            }
-        });
-    </script>
+    <script src="js/common.js"></script>
+    <script src="js/listings.js"></script>
 </body>
 
 </html>

@@ -1,11 +1,19 @@
 {
   "name": "real-estate-website",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "LuxeEstate property listings, buyer favorites, and agent/admin dashboards",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup": "node scripts/setup.js",
+    "prestart": "node scripts/setup.js",
+    "start": "node server.js",
+    "predev": "node scripts/setup.js",
+    "dev": "node --watch server.js",
+    "seed": "node seed.js",
+    "verify": "node verify_data.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js"
   },
+  "engines": { "node": ">=22.0.0" },
   "keywords": [],
   "author": "",
   "license": "ISC",

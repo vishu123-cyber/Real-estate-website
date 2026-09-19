@@ -1,35 +1,31 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const { connectDatabase, disconnectDatabase } = require('./config/database');
 const User = require('./models/User');
 
-// Connect (using same string as server.js)
-mongoose.connect('mongodb://localhost:27017/realestate')
+const email = process.env.RESET_EMAIL?.trim().toLowerCase();
+const newPass = process.env.RESET_PASSWORD;
+if (!email || !newPass || newPass.length < 8 || Buffer.byteLength(newPass, 'utf8') > 72) {
+    console.error('Set RESET_EMAIL and RESET_PASSWORD (8+ characters, at most 72 UTF-8 bytes) before running this script.');
+    process.exit(1);
+}
+
+connectDatabase()
     .then(async () => {
         console.log('Connected to DB');
-
-        const email = 'vasu@gmail.com';
-        const newPass = 'password123';
 
         // Check if user exists
         const user = await User.findOne({ email });
         if (!user) {
             console.log(`User ${email} not found.`);
-            process.exit(0);
+            process.exitCode = 1;
+            return;
         }
 
-        // Hash new password
-        const hashedPassword = await bcrypt.hash(newPass, 8);
-
-        // Update
-        await User.updateOne(
-            { email },
-            { $set: { password: hashedPassword } }
-        );
-
-        console.log(`Password for ${email} reset to: ${newPass}`);
-        process.exit(0);
+        user.password = newPass;
+        await user.save();
+        console.log(`Password updated for ${email}.`);
     })
     .catch(err => {
-        console.error(err);
-        process.exit(1);
-    });
+        console.error('Password reset failed:', err.name);
+        process.exitCode = 1;
+    })
+    .finally(disconnectDatabase);

@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const { connectDatabase, disconnectDatabase } = require('./config/database');
 const User = require("./models/User");
 
-mongoose.connect("mongodb://127.0.0.1:27017/realestate")
+connectDatabase()
     .then(async () => {
         console.log("MongoDB Connected");
-        const users = await User.find({});
-        console.log("Users:", users);
-        mongoose.connection.close();
+        const users = await User.find({}).select('username email role status agentIdString').lean();
+        console.table(users);
     })
-    .catch(err => console.log(err));
+    .catch(err => { console.error('Could not list users:', err.name); process.exitCode = 1; })
+    .finally(disconnectDatabase);

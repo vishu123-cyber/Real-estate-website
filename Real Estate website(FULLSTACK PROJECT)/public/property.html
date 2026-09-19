@@ -4,318 +4,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Details - LuxeEstate</title>
+    <meta name="description" content="View property details and contact a LuxeEstate expert.">
+    <title>Property details | LuxeEstate</title>
+    <style>html{background:#04111b;color-scheme:dark}body{margin:0;background:#071a27;color:#b8c8d0;font-family:Manrope,Inter,system-ui,sans-serif}</style>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
     <header>
-        <nav>
-            <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
-            </div>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <div class="nav-links">
+        <nav aria-label="Main navigation">
+            <a class="logo" href="/" aria-label="LuxeEstate home"><img src="/logo.png" alt="" aria-hidden="true"><span>Luxe<span>Estate</span></span></a>
+            <button class="hamburger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <div class="nav-links" id="main-navigation">
                 <a href="/">Home</a>
-                <a href="/#properties">Properties</a>
+                <a class="active" href="/#properties">Properties</a>
                 <a href="/agent-login.html">Agents</a>
                 <a href="/about.html">About</a>
-                <a href="/admin-login.html">Admin Login</a>
+                <a href="/admin-login.html">Admin</a>
             </div>
+            <div id="auth-buttons"></div>
         </nav>
     </header>
 
-    <main class="property-detail">
-        <div id="loading" class="loading">Loading property details...</div>
+    <main class="property-detail property-detail-page">
+        <div id="loading" class="loading">Preparing your property view...</div>
 
         <div id="property-content" style="display: none;">
-            <div class="detail-header">
-                <a href="/" style="color: var(--secondary); margin-bottom: 1rem; display: inline-block;">&larr; Back to
-                    Listings</a>
-                <h1 id="prop-title">Property Title</h1>
-                <p id="prop-location" style="color: var(--text-light); font-size: 1.1rem;"><i
-                        class="fas fa-map-marker-alt"></i> Location</p>
-            </div>
-
-            <div class="carousel-container">
-                <div class="carousel-track" id="carousel-track">
-                    <!-- Images injected here -->
+            <section class="detail-header property-hero" aria-labelledby="prop-title">
+                <a class="detail-crumb" href="/#properties"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to homes</a>
+                <div class="detail-heading">
+                    <p class="section-kicker">Selected home</p>
+                    <h1 id="prop-title">Property title</h1>
+                    <p id="prop-location"><i class="fas fa-location-dot" aria-hidden="true"></i> Location</p>
                 </div>
-                <button class="carousel-btn prev-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
-                <button class="carousel-btn next-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
-                <div class="carousel-indicators" id="carousel-indicators"></div>
+                <div class="detail-actions" aria-label="Property actions">
+                    <button type="button" class="btn btn-secondary share-property-btn" id="share-property-btn">
+                        <i class="fas fa-share-nodes" aria-hidden="true"></i> Share this home
+                    </button>
+                    <p id="share-status" class="share-status" role="status" aria-live="polite" hidden></p>
+                </div>
+            </section>
+
+            <div class="carousel-container property-gallery" id="property-gallery" role="group" aria-roledescription="carousel" aria-label="Property image gallery" tabindex="0">
+                <div class="carousel-track" id="carousel-track">
+                    <!-- Images are injected here -->
+                </div>
+                <button type="button" class="carousel-btn prev-btn" id="prevBtn" title="Previous image"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                <button type="button" class="carousel-btn next-btn" id="nextBtn" title="Next image"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                <div class="carousel-indicators gallery-controls" id="carousel-indicators" aria-label="Choose a gallery image">
+                    <span class="badge gallery-position" id="gallery-position" aria-live="polite">1 of 1</span>
+                </div>
             </div>
 
             <div class="detail-grid">
-                <div>
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <section class="detail-overview" aria-label="Property overview">
+                    <div class="detail-summary">
                         <span class="badge" id="prop-type">Type</span>
-                        <div class="card-price" id="prop-price">$0</div>
+                        <div class="card-price" id="prop-price">Price on request</div>
                     </div>
 
-                    <div class="card-features" style="margin-bottom: 2rem;">
-                        <span class="feature"><i class="fas fa-bed"></i> 4 Beds</span>
-                        <span class="feature"><i class="fas fa-bath"></i> 3 Baths</span>
-                        <span class="feature"><i class="fas fa-ruler-combined"></i> 2,500 sqft</span>
+                    <div class="detail-meta property-facts" aria-label="Property highlights">
+                        <span class="feature"><i class="fas fa-bed" aria-hidden="true"></i><span id="prop-beds">Beds</span></span>
+                        <span class="feature"><i class="fas fa-bath" aria-hidden="true"></i><span id="prop-baths">Baths</span></span>
+                        <span class="feature property-photo-fact"><i class="fas fa-images" aria-hidden="true"></i><span id="property-photo-count">Photo gallery</span></span>
+                        <span class="feature property-map-fact" id="property-map-fact" hidden><i class="fas fa-location-crosshairs" aria-hidden="true"></i><span>Map pin available</span></span>
                     </div>
 
-                    <h3>Description</h3>
-                    <p id="prop-desc" style="margin-bottom: 2rem; color: #ccc; line-height: 1.8;">
-                        Property description goes here.
-                    </p>
-
-                    <h3>Features</h3>
-                    <ul style="list-style: disc; margin-left: 1.5rem; color: #ccc; margin-bottom: 2rem;">
-                        <li>Modern Kitchen</li>
-                        <li>High Ceilings</li>
-                        <li>Smart Home System</li>
-                        <li>Private Garden</li>
-                    </ul>
-                </div>
+                    <section class="detail-description property-description" aria-labelledby="property-description-heading">
+                        <p class="section-kicker">About this home</p>
+                        <h2 id="property-description-heading">Designed for the life you want.</h2>
+                        <p id="prop-desc">Property description goes here.</p>
+                    </section>
+                </section>
 
                 <aside class="property-sidebar">
-                    <div class="agent-box">
-                        <h3>Contact Agent</h3>
-                        <p style="margin-bottom: 1.5rem; color: #aaa;">Interested in this property? Send us a message.
-                        </p>
-
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" id="contact-name" placeholder="Your Name">
+                    <section class="agent-box property-form-card">
+                        <p class="section-kicker">Make an enquiry</p>
+                        <h2>Interested in this home?</h2>
+                        <p class="agent-intro">Send a message and a property expert will be in touch.</p>
+                        <div class="agent-contact-line property-agent-profile" id="agent-name-line" hidden>
+                            <i class="fas fa-user-tie" aria-hidden="true"></i>
+                            <span><span class="agent-profile-label">Your property expert</span><strong id="agent-name"></strong></span>
                         </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="contact-email" placeholder="Your Email">
-                        </div>
-                        <div class="form-group">
-                            <label>Message</label>
-                            <textarea id="contact-message" rows="4"
-                                placeholder="I'm interested in this property..."></textarea>
-                        </div>
-                        <button id="contact-btn" class="btn" style="width: 100%;">Send Message</button>
-                        <p id="contact-status" style="margin-top: 1rem; text-align: center; font-size: 0.9rem;"></p>
+                        <form id="property-contact-form">
+                            <div class="form-group">
+                                <label for="contact-name">Your name</label>
+                                <input type="text" id="contact-name" name="name" maxlength="100" autocomplete="name" required placeholder="How should we address you?">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email address</label>
+                                <input type="email" id="contact-email" name="email" maxlength="254" autocomplete="email" required placeholder="you@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Your message</label>
+                                <textarea id="contact-message" name="message" rows="4" maxlength="5000" required placeholder="I'm interested in this property..."></textarea>
+                            </div>
+                            <button type="submit" id="contact-btn" class="btn">Send an enquiry <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                            <p id="contact-status" data-contact-status aria-live="polite"></p>
+                        </form>
+                        <div class="agent-contact-line property-contact-channel"><i class="fas fa-headset" aria-hidden="true"></i><span id="agent-contact">Agent contact</span></div>
+                    </section>
 
-                        <div
-                            style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); text-align: center;">
-                            <p id="agent-contact" style="font-weight: 600; color: var(--secondary);">Agent Contact</p>
-                        </div>
-                    </div>
-
-
-
-                    <!-- Directions Button -->
-                    <div class="agent-box" style="margin-top: 2rem; padding: 2rem; text-align: center;">
-                        <h3 style="margin-bottom: 1rem;">Location</h3>
-                        <p id="map-location-text" style="color: #aaa; margin-bottom: 1.5rem;"></p>
-                        <button id="get-directions-btn" class="btn" style="width: 100%;">
-                            <i class="fas fa-map-marked-alt"></i> Get Directions
-                        </button>
-                    </div>
+                    <section class="agent-box property-location-card">
+                        <p class="section-kicker">Location</p>
+                        <h2>See the neighbourhood</h2>
+                        <p id="map-location-text"></p>
+                        <button type="button" id="get-directions-btn" class="btn btn-secondary"><i class="fas fa-map-location-dot" aria-hidden="true"></i> Get directions</button>
+                    </section>
                 </aside>
             </div>
         </div>
     </main>
 
-        <footer>
+    <footer class="site-footer" id="site-footer" aria-label="Site footer">
         <div class="footer-grid">
-            <div>
-                <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
+            <div class="footer-brand">
+                <a class="logo" href="/" aria-label="LuxeEstate home"><img src="/logo.png" alt="" aria-hidden="true"><span>Luxe<span>Estate</span></span></a>
+                <p>Considered real estate advice for your next chapter.</p>
+                <a class="footer-cta" href="/#properties">View available homes <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
-                <p>Premium real estate services for the modern world.</p>
-            </div>
-            <div>
-                <h4>Quick Links</h4>
+            <nav class="footer-column" aria-label="Explore LuxeEstate">
+                <h4>Explore</h4>
                 <ul>
-                    <li><a href="/">Home</a></li>
                     <li><a href="/#properties">Properties</a></li>
-                    <li><a href="/about.html">About</a></li>
-                    <li><a href="/agent-login.html">Agent Login</a></li>
+                    <li><a href="/favorites.html">Saved homes</a></li>
+                    <li><a href="/about.html">Our approach</a></li>
+                    <li><a href="/agent-login.html">For agents</a></li>
                 </ul>
-            </div>
-            <div>
-                <h4>Contact</h4>
-                <p>contact@luxeestate.com</p>
-                <p>+1 (555) 123-4567</p>
+            </nav>
+            <nav class="footer-column" aria-label="Account links">
+                <h4>Your account</h4>
+                <ul>
+                    <li><a href="/login.html">Log in</a></li>
+                    <li><a href="/signup.html">Create an account</a></li>
+                    <li><a href="/agent-login.html">Agent portal</a></li>
+                    <li><a href="/admin-login.html">Admin sign in</a></li>
+                </ul>
+            </nav>
+            <div class="footer-contact">
+                <h4>Get in touch</h4>
+                <p class="footer-contact__label">A considered next step starts with a conversation.</p>
+                <a class="footer-contact__email" href="mailto:contact@luxeestate.com"><i class="fas fa-envelope" aria-hidden="true"></i> contact@luxeestate.com</a>
+                <p class="footer-hours"><i class="fas fa-clock" aria-hidden="true"></i> Mon–Sat, 9:00–18:00</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            &copy; 2024 LuxeEstate. All rights reserved.
-        </div>
+        <div class="footer-bottom"><span>&copy; 2026 LuxeEstate. Made for better moves.</span><a href="/">Return home <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
     </footer>
 
-
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-
-            if (!id) {
-                window.location.href = '/';
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/properties/${id}`);
-                if (!response.ok) throw new Error('Property not found');
-                const property = await response.json();
-
-                document.getElementById('prop-title').textContent = property.title;
-                document.getElementById('prop-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${property.location}`;
-
-                // Location & Directions Logic
-                // Location & Directions Logic
-                const locationText = document.getElementById('map-location-text');
-                const googleMapsQuery = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(property.location)}`;
-
-                // Make location text clickable
-                locationText.innerHTML = `<a href="${googleMapsQuery}" target="_blank" style="color: var(--secondary); text-decoration: underline; cursor: pointer;">${property.location}</a>`;
-
-                const dirBtn = document.getElementById('get-directions-btn');
-                dirBtn.style.display = 'block'; // Ensure visible
-
-                dirBtn.addEventListener('click', () => {
-                    if (property.coordinates && property.coordinates.lat) {
-                        // If coordinates exist, try to get specific directions
-                        if (!navigator.geolocation) {
-                            window.open(googleMapsQuery, '_blank');
-                            return;
-                        }
-
-                        dirBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating...';
-
-                        navigator.geolocation.getCurrentPosition(position => {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
-                            const destLat = property.coordinates.lat;
-                            const destLng = property.coordinates.lng;
-
-                            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=driving`;
-                            window.open(mapsUrl, '_blank');
-                            dirBtn.innerHTML = '<i class="fas fa-map-marked-alt"></i> Get Directions';
-
-                        }, error => {
-                            // Fallback to general search on error
-                            window.open(googleMapsQuery, '_blank');
-                            dirBtn.innerHTML = '<i class="fas fa-map-marked-alt"></i> Get Directions';
-                        });
-                    } else {
-                        // Fallback for location string only
-                        window.open(googleMapsQuery, '_blank');
-                    }
-                });
-
-                // Carousel Logic
-                const track = document.getElementById('carousel-track');
-                const indicators = document.getElementById('carousel-indicators');
-                const images = property.images && property.images.length > 0 ? property.images : [property.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa'];
-
-                track.innerHTML = images.map((img, index) => `
-                    <div class="carousel-slide">
-                        <img src="${img}" alt="${property.title} - Image ${index + 1}" onerror="this.onerror=null; console.error('Detail image failed:', this.src); this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';">
-                    </div>
-                `).join('');
-
-                indicators.innerHTML = images.map((_, index) => `
-                    <div class="indicator ${index === 0 ? 'active' : ''}" data-index="${index}"></div>
-                `).join('');
-
-                let currentIndex = 0;
-                const updateCarousel = () => {
-                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    document.querySelectorAll('.indicator').forEach((ind, i) => {
-                        ind.classList.toggle('active', i === currentIndex);
-                    });
-                };
-
-                document.getElementById('nextBtn').addEventListener('click', () => {
-                    currentIndex = (currentIndex + 1) % images.length;
-                    updateCarousel();
-                });
-
-                document.getElementById('prevBtn').addEventListener('click', () => {
-                    currentIndex = (currentIndex - 1 + images.length) % images.length;
-                    updateCarousel();
-                });
-
-                indicators.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('indicator')) {
-                        currentIndex = parseInt(e.target.dataset.index);
-                        updateCarousel();
-                    }
-                });
-
-                document.getElementById('prop-type').textContent = property.type;
-                document.getElementById('prop-price').textContent = '₹' + property.price.toLocaleString('en-IN');
-                document.getElementById('prop-desc').textContent = property.description;
-                document.getElementById('agent-contact').textContent = property.agentContact || 'Call +91 98765 43210';
-
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('property-content').style.display = 'block';
-
-                // Handle contact form
-                document.getElementById('contact-btn').addEventListener('click', async () => {
-                    const name = document.getElementById('contact-name').value;
-                    const email = document.getElementById('contact-email').value;
-                    const message = document.getElementById('contact-message').value;
-                    const status = document.getElementById('contact-status');
-
-                    if (!name || !email || !message) {
-                        status.textContent = "Please fill in all fields.";
-                        status.style.color = "red";
-                        return;
-                    }
-
-                    status.textContent = "Sending...";
-                    status.style.color = "#777";
-
-                    try {
-                        const res = await fetch('/api/properties/messages', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ name, email, message, propertyId: id })
-                        });
-
-                        if (res.ok) {
-                            status.textContent = "Message sent successfully!";
-                            status.style.color = "green";
-                            document.getElementById('contact-name').value = '';
-                            document.getElementById('contact-email').value = '';
-                            document.getElementById('contact-message').value = '';
-                        } else {
-                            throw new Error('Failed to send');
-                        }
-                    } catch (error) {
-                        status.textContent = "Error sending message. Try again.";
-                        status.style.color = "red";
-                    }
-                });
-
-
-
-            } catch (error) {
-                document.getElementById('loading').textContent = 'Error loading property details.';
-                console.error(error);
-            }
-        });
-
-
-    </script>
+    <script src="js/common.js"></script>
+    <script src="js/listings.js"></script>
+    <script src="js/property.js"></script>
 </body>
 
 </html>

@@ -4,114 +4,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuxeEstate - Premium Real Estate</title>
+    <meta name="description" content="Discover thoughtfully chosen homes with LuxeEstate.">
+    <title>LuxeEstate | Find a place that feels like home</title>
+    <style>html{background:#04111b;color-scheme:dark}body{margin:0;background:#071a27;color:#b8c8d0;font-family:Manrope,Inter,system-ui,sans-serif}</style>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
     <header>
-        <nav>
-            <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
-            </div>
-            <div class="hamburger">
+        <nav aria-label="Main navigation">
+            <a class="logo" href="/" aria-label="LuxeEstate home">
+                <img src="/logo.png" alt="" aria-hidden="true">
+                <span>Luxe<span>Estate</span></span>
+            </a>
+            <button class="hamburger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="main-navigation">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
-            </div>
-            <div class="nav-links">
-                <a href="/">Home</a>
+            </button>
+            <div class="nav-links" id="main-navigation">
+                <a class="active" href="/">Home</a>
                 <a href="/#properties">Properties</a>
                 <a href="/agent-login.html">Agents</a>
                 <a href="/about.html">About</a>
-                <a href="/admin-login.html">Admin Login</a>
+                <a href="/#contact">Contact</a>
+                <a href="/admin-login.html">Admin</a>
             </div>
             <div id="auth-buttons">
-                <!-- Populated by JS -->
-                <a href="/login.html" class="btn">Log In</a>
+                <a href="/login.html">Log in</a>
+                <a href="/signup.html" class="btn">Get started</a>
             </div>
         </nav>
     </header>
 
     <section class="hero">
-        <h1>Find Your Dream Home</h1>
-        <p>Discover a curated selection of the finest properties in the most desirable locations.</p>
+        <div class="hero-copy">
+            <p class="eyebrow"><i class="fas fa-sparkles" aria-hidden="true"></i> Curated homes across India</p>
+            <h1>Find a place that feels like <em>home.</em></h1>
+            <p class="hero-lead">Explore considered spaces, trusted local expertise, and a smoother way to make your next move.</p>
 
-        <form id="search-form" class="search-container">
-            <div class="search-field">
-                <input type="text" id="location" placeholder="City, e.g. Mumbai, Bangalore">
+            <form id="search-form" class="search-container" aria-label="Search properties">
+                <label class="search-field search-location" for="location">
+                    <span>Where</span>
+                    <input type="text" id="location" aria-label="Search by city" placeholder="City or neighbourhood">
+                </label>
+                <label class="search-field" for="type">
+                    <span>Home type</span>
+                    <select id="type" aria-label="Property type">
+                        <option value="">Any type</option>
+                        <option value="House">House</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Condo">Condo</option>
+                        <option value="Villa">Villa</option>
+                    </select>
+                </label>
+                <label class="search-field" for="price">
+                    <span>Budget</span>
+                    <select id="price" aria-label="Maximum price">
+                        <option value="">Any budget</option>
+                        <option value="5000000">&#8377;50 Lakhs</option>
+                        <option value="10000000">&#8377;1 Crore</option>
+                        <option value="50000000">&#8377;5 Crores</option>
+                        <option value="100000000">&#8377;10 Crores</option>
+                    </select>
+                </label>
+                <button type="submit" class="btn"><i class="fas fa-search" aria-hidden="true"></i><span>Search homes</span></button>
+            </form>
+
+            <p class="hero-note"><i class="fas fa-shield-heart" aria-hidden="true"></i> Verified listings. Personal guidance. No pressure.</p>
+            <div class="hero-stats" aria-label="LuxeEstate highlights">
+                <div class="hero-stat"><strong>1,200+</strong><span>homes placed</span></div>
+                <div class="hero-stat"><strong>15 yrs</strong><span>local insight</span></div>
+                <div class="hero-stat"><strong>4.9/5</strong><span>client rating</span></div>
             </div>
-            <div class="search-field">
-                <select id="type">
-                    <option value="">Any Type</option>
-                    <option value="House">House</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="Condo">Condo</option>
-                    <option value="Villa">Villa</option>
-                </select>
-            </div>
-            <div class="search-field">
-                <select id="price">
-                    <option value="">Max Price</option>
-                    <option value="5000000">₹50 Lakhs</option>
-                    <option value="10000000">₹1 Crore</option>
-                    <option value="50000000">₹5 Crores</option>
-                    <option value="100000000">₹10 Crores</option>
-                </select>
-            </div>
-            <button type="submit" class="btn">Search</button>
-        </form>
+        </div>
+    </section>
+
+    <section class="trust-strip" aria-label="LuxeEstate service highlights">
+        <div class="trust-item"><i class="fas fa-house-chimney" aria-hidden="true"></i><span><strong>Thoughtfully chosen</strong> Listings worth your time</span></div>
+        <div class="trust-item"><i class="fas fa-location-dot" aria-hidden="true"></i><span><strong>Local intelligence</strong> Advice rooted in place</span></div>
+        <div class="trust-item"><i class="fas fa-handshake" aria-hidden="true"></i><span><strong>People first</strong> Guidance from search to keys</span></div>
+    </section>
+
+    <section class="quick-filter-bar reveal" aria-labelledby="quick-filter-title">
+        <div>
+            <p class="section-kicker">Browse your way</p>
+            <h2 id="quick-filter-title">Find a home for your next chapter.</h2>
+        </div>
+        <div class="quick-filter-list" role="group" aria-label="Quick property filters">
+            <button class="quick-filter is-active" type="button" data-quick-filter="all"><i class="fas fa-grid-2" aria-hidden="true"></i> All homes</button>
+            <button class="quick-filter" type="button" data-quick-filter="Villa"><i class="fas fa-water-ladder" aria-hidden="true"></i> Private villas</button>
+            <button class="quick-filter" type="button" data-quick-filter="Apartment"><i class="fas fa-building" aria-hidden="true"></i> City apartments</button>
+            <button class="quick-filter" type="button" data-quick-filter="House"><i class="fas fa-tree-city" aria-hidden="true"></i> Family houses</button>
+        </div>
     </section>
 
     <main class="properties-section" id="properties">
-        <div class="section-header">
+        <div class="property-section-heading reveal">
             <div>
-                <h2>Featured Properties</h2>
+                <p class="section-kicker">Explore homes</p>
+                <h2>Spaces selected for how you want to live.</h2>
+                <p>Start with a collection of homes that stand out for the right reasons.</p>
+            </div>
+            <a href="#property-grid" class="text-link">See the collection <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+
+        <div class="listing-toolbar reveal" aria-label="Property browsing tools">
+            <div class="listing-toolbar-meta">
+                <span class="listing-live-dot" aria-hidden="true"></span>
+                <p id="listing-result-count" aria-live="polite">Loading curated homes...</p>
+            </div>
+            <div class="listing-toolbar-actions">
+                <label class="sort-control" for="listing-sort"><span>Sort by</span><select id="listing-sort"><option value="recommended">Recommended</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="newest">Newest first</option></select></label>
+                <button id="clear-listing-filters" class="clear-filters" type="button"><i class="fas fa-rotate-left" aria-hidden="true"></i> Reset</button>
             </div>
         </div>
 
-        <div id="property-grid" class="grid">
-            <!-- Properties will be injected here -->
+        <div id="property-grid" class="grid reveal" aria-live="polite">
+            <!-- Properties are injected here -->
         </div>
     </main>
 
-        <footer>
+    <section class="journey-section reveal" aria-labelledby="journey-title">
+        <div class="journey-heading">
+            <p class="section-kicker">A calmer way to move</p>
+            <h2 id="journey-title">From first look to front door.</h2>
+            <p>We combine smart search tools with genuine local guidance, so you always know what comes next.</p>
+        </div>
+        <div class="journey-steps">
+            <article class="journey-step"><span class="journey-number">01</span><i class="fas fa-compass-drafting" aria-hidden="true"></i><h3>Discover your fit</h3><p>Search by place, home type, and budget—then save the spaces that stay with you.</p></article>
+            <article class="journey-step"><span class="journey-number">02</span><i class="fas fa-message-dots" aria-hidden="true"></i><h3>Talk it through</h3><p>Ask a local expert the practical questions that listings alone cannot answer.</p></article>
+            <article class="journey-step"><span class="journey-number">03</span><i class="fas fa-key" aria-hidden="true"></i><h3>Move with confidence</h3><p>Make your decision with clear context, thoughtful support, and no pressure.</p></article>
+        </div>
+        <aside class="market-note"><i class="fas fa-sparkles" aria-hidden="true"></i><span><strong>Thoughtful matches, not endless scrolling.</strong> Your next shortlist can start with just one good search.</span><a href="#contact">Talk to us <i class="fas fa-arrow-right" aria-hidden="true"></i></a></aside>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-layout">
+            <div class="contact-copy">
+                <p class="section-kicker">Let's talk</p>
+                <h2>Not sure where to begin?</h2>
+                <p>Tell us what matters most in your next home. A local expert will help you find a clear next step.</p>
+                <div class="contact-details">
+                    <a href="mailto:contact@luxeestate.com"><i class="fas fa-envelope" aria-hidden="true"></i> contact@luxeestate.com</a>
+                    <span><i class="fas fa-clock" aria-hidden="true"></i> Usually replies within one business day</span>
+                </div>
+            </div>
+            <form id="contact-form" class="glass-panel contact-form-card">
+                <div class="form-group"><label for="contact-name">Your name</label><input id="contact-name" name="name" maxlength="100" autocomplete="name" placeholder="How should we address you?" required></div>
+                <div class="form-group"><label for="contact-email">Email address</label><input id="contact-email" name="email" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com" required></div>
+                <div class="form-group"><label for="contact-message">What are you looking for?</label><textarea id="contact-message" name="message" rows="4" maxlength="5000" placeholder="Tell us about your ideal home..." required></textarea></div>
+                <button class="btn" type="submit">Send an enquiry <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                <p data-contact-status aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer" id="site-footer" aria-label="Site footer">
         <div class="footer-grid">
-            <div>
-                <div class="logo" style="display: flex; align-items: center;">
-                <img src="/logo.png" alt="LuxeEstate Logo" style="height: 40px; margin-right: 10px;">
-                Luxe<span style="color: var(--secondary);">Estate</span>
+            <div class="footer-brand">
+                <a class="logo" href="/" aria-label="LuxeEstate home"><img src="/logo.png" alt="" aria-hidden="true"><span>Luxe<span>Estate</span></span></a>
+                <p>Considered real estate advice for your next chapter.</p>
+                <a class="footer-cta" href="/#properties">View available homes <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
-                <p>Premium real estate services for the modern world.</p>
-            </div>
-            <div>
-                <h4>Quick Links</h4>
+            <nav class="footer-column" aria-label="Explore LuxeEstate">
+                <h4>Explore</h4>
                 <ul>
-                    <li><a href="/">Home</a></li>
                     <li><a href="/#properties">Properties</a></li>
-                    <li><a href="/about.html">About</a></li>
-                    <li><a href="/agent-login.html">Agent Login</a></li>
+                    <li><a href="/favorites.html">Saved homes</a></li>
+                    <li><a href="/about.html">Our approach</a></li>
+                    <li><a href="/agent-login.html">For agents</a></li>
                 </ul>
-            </div>
-            <div>
-                <h4>Contact</h4>
-                <p>contact@luxeestate.com</p>
-                <p>+1 (555) 123-4567</p>
+            </nav>
+            <nav class="footer-column" aria-label="Account links">
+                <h4>Your account</h4>
+                <ul>
+                    <li><a href="/login.html">Log in</a></li>
+                    <li><a href="/signup.html">Create an account</a></li>
+                    <li><a href="/agent-login.html">Agent portal</a></li>
+                    <li><a href="/admin-login.html">Admin sign in</a></li>
+                </ul>
+            </nav>
+            <div class="footer-contact">
+                <h4>Get in touch</h4>
+                <p class="footer-contact__label">A considered next step starts with a conversation.</p>
+                <a class="footer-contact__email" href="mailto:contact@luxeestate.com"><i class="fas fa-envelope" aria-hidden="true"></i> contact@luxeestate.com</a>
+                <p class="footer-hours"><i class="fas fa-clock" aria-hidden="true"></i> Mon–Sat, 9:00–18:00</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            &copy; 2024 LuxeEstate. All rights reserved.
-        </div>
+        <div class="footer-bottom"><span>&copy; 2026 LuxeEstate. Made for better moves.</span><a href="/">Return home <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
     </footer>
 
-    <script src="app.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/listings.js"></script>
+    <script src="js/experience.js"></script>
 </body>
 
 </html>

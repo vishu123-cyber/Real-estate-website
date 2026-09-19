@@ -1,15 +1,14 @@
-body {
-  font-family: Arial;
-  margin: 20px;
-}
-
-input, button {
-  margin: 5px;
-  padding: 8px;
-}
+/*
+  Compatibility entry point for older pages that still request style.css.
+  Keep all pages on the same LuxeEstate visual system.
+*/
+@import url("./styles.css");
 
 .property {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-top: 10px;
+  margin-top: 1rem;
+  padding: 1.1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: var(--shadow-xs);
 }

@@ -4,259 +4,864 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#081a2e">
     <title>Agent Dashboard - LuxeEstate</title>
     <link rel="stylesheet" href="styles.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .dashboard-container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+        .agent-portal-page {
+            --agent-ink: #edf6ff;
+            --agent-muted: #99aec2;
+            --agent-accent: #79ecd7;
+            --agent-accent-soft: rgba(121, 236, 215, 0.13);
+            --agent-panel: rgba(11, 31, 54, 0.82);
+            --agent-line: rgba(185, 218, 239, 0.15);
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 2% 0%, rgba(64, 133, 185, 0.27), transparent 28rem),
+                radial-gradient(circle at 98% 40%, rgba(62, 207, 178, 0.15), transparent 27rem),
+                #07182a;
+            color: var(--agent-muted);
         }
 
-        .sidebar {
-            background: var(--dark);
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            overflow-x: auto;
-            white-space: nowrap;
-            gap: 0.5rem;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        .sidebar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .sidebar h3 {
-            display: none; /* Hide Menu title on mobile */
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: var(--text);
-            text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 0;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-
-        .menu-item:hover,
-        .menu-item.active {
-            background: rgba(232, 223, 223, 0.05);
-            color: var(--secondary);
-        }
-
-        .menu-item i {
-            margin-right: 0.8rem;
-            width: 20px;
-        }
-
-        .content-area {
-            background: var(--dark);
-            padding: 2rem;
-            border-radius: var(--radius);
-            border: 1px solid var(--glass-border);
-            min-height: 80vh;
-        }
-
-        /* Listing Cards */
-        .listing-card {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            margin-bottom: 1.5rem;
-        }
-
-        .listing-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .listing-info {
-            flex: 1;
-        }
-
-        .listing-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-direction: row; /* Horizontal actions on mobile */
-            justify-content: flex-start;
-        }
-        
-        .action-btn { flex: 1; } /* Buttons span full width evenly */
-
-        .action-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--glass-border);
-            background: transparent;
-            color: var(--text);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .action-btn:hover {
-            border-color: var(--secondary);
-            color: var(--secondary);
-        }
-
-        .delete-btn:hover {
-            border-color: #ff4d4d;
-            color: #ff4d4d;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
+        .agent-portal-page::before {
+            content: "";
             position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.3;
+            background-image: linear-gradient(rgba(194, 225, 242, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(194, 225, 242, 0.04) 1px, transparent 1px);
+            background-size: 38px 38px;
+            mask-image: linear-gradient(145deg, black, transparent 75%);
+        }
+
+        .agent-portal-page > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .agent-portal-page .agent-header {
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            z-index: 20;
+            border-bottom: 1px solid var(--agent-line);
+            background: rgba(7, 24, 42, 0.78);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .agent-portal-page .agent-nav {
+            width: min(100% - 2rem, 1400px);
+            min-height: 74px;
+            margin: 0 auto;
+            padding: 0.75rem 0;
+            display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--dark);
-            padding: 2rem;
-            border-radius: var(--radius);
-            width: 100%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border: 1px solid var(--glass-border);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+            justify-content: space-between;
             gap: 1rem;
         }
 
-        .full-width {
+        .agent-portal-page .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            color: var(--agent-ink);
+            font-size: clamp(1.08rem, 2vw, 1.35rem);
+            letter-spacing: -0.03em;
+        }
+
+        .agent-portal-page .brand-mark {
+            display: grid;
+            width: 2.15rem;
+            height: 2.15rem;
+            place-items: center;
+            border: 1px solid rgba(121, 236, 215, 0.55);
+            border-radius: 0.7rem;
+            color: var(--agent-accent);
+            background: rgba(121, 236, 215, 0.09);
+            font-size: 0.92rem;
+        }
+
+        .agent-portal-page .brand-context {
+            display: block;
+            margin-top: 0.1rem;
+            color: var(--agent-muted);
+            font-family: Inter, sans-serif;
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .agent-portal-page .agent-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 0;
+        }
+
+        .agent-portal-page .agent-identity {
+            min-width: 0;
+            padding-right: 0.75rem;
+            border-right: 1px solid var(--agent-line);
+            color: var(--agent-ink);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .agent-portal-page .agent-identity small {
+            display: block;
+            overflow: hidden;
+            max-width: 18rem;
+            margin-bottom: 0.08rem;
+            color: var(--agent-muted);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+        }
+
+        .agent-portal-page #agent-name {
+            display: block;
+            overflow: hidden;
+            max-width: 18rem;
+            color: var(--agent-accent);
+            text-overflow: ellipsis;
+        }
+
+        .agent-portal-page #logout-btn {
+            display: inline-flex;
+            width: auto;
+            min-height: 2.5rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.48rem;
+            padding: 0.68rem 0.95rem;
+            border: 1px solid var(--agent-line);
+            border-radius: 0.68rem;
+            background: rgba(255, 255, 255, 0.025);
+            color: #c8d7e6;
+            font: 600 0.78rem/1 Inter, sans-serif;
+            letter-spacing: 0.03em;
+            text-transform: none;
+        }
+
+        .agent-portal-page #logout-btn:hover,
+        .agent-portal-page #logout-btn:focus-visible {
+            border-color: rgba(121, 236, 215, 0.65);
+            background: var(--agent-accent-soft);
+            color: var(--agent-accent);
+            outline: none;
+            transform: translateY(-1px);
+        }
+
+        .agent-portal-page .dashboard-container {
+            display: grid;
+            grid-template-columns: 15.8rem minmax(0, 1fr);
+            align-items: start;
+            gap: 1.25rem;
+            width: min(100% - 2rem, 1400px);
+            margin: 0 auto;
+            padding: 1.7rem 0 4rem;
+        }
+
+        .agent-portal-page .sidebar,
+        .agent-portal-page .content-area {
+            border: 1px solid var(--agent-line);
+            background: linear-gradient(145deg, rgba(16, 43, 71, 0.87), rgba(7, 26, 47, 0.95));
+            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.14);
+        }
+
+        .agent-portal-page .sidebar {
+            position: sticky;
+            top: 92px;
+            overflow: hidden;
+            padding: 0.7rem;
+            border-radius: 1rem;
+        }
+
+        .agent-portal-page .sidebar-heading {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.75rem 0.75rem 0.85rem;
+            color: var(--agent-ink);
+            font-family: Inter, sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .agent-portal-page .sidebar-heading i {
+            color: var(--agent-accent);
+        }
+
+        .agent-portal-page .sidebar h3 {
+            margin: 0;
+            font: inherit;
+        }
+
+        .agent-portal-page .menu-item {
+            display: flex;
+            width: 100%;
+            min-height: 2.95rem;
+            align-items: center;
+            gap: 0.72rem;
+            margin: 0 0 0.35rem;
+            padding: 0.72rem 0.78rem;
+            border: 1px solid transparent;
+            border-radius: 0.72rem;
+            background: transparent;
+            color: var(--agent-muted);
+            font: 600 0.85rem/1 Inter, sans-serif;
+            letter-spacing: 0.005em;
+            text-align: left;
+            text-decoration: none;
+            text-transform: none;
+            cursor: pointer;
+            transition: color 180ms ease, background 180ms ease, border-color 180ms ease, transform 180ms ease;
+        }
+
+        .agent-portal-page .menu-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .agent-portal-page .menu-item i {
+            width: 1.2rem;
+            color: #91aac1;
+            font-size: 0.92rem;
+            text-align: center;
+        }
+
+        .agent-portal-page .menu-item:hover,
+        .agent-portal-page .menu-item:focus-visible {
+            border-color: rgba(185, 218, 239, 0.17);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--agent-ink);
+            outline: none;
+        }
+
+        .agent-portal-page .menu-item.active {
+            border-color: rgba(121, 236, 215, 0.2);
+            background: var(--agent-accent-soft);
+            color: var(--agent-accent);
+        }
+
+        .agent-portal-page .menu-item.active i {
+            color: var(--agent-accent);
+        }
+
+        .agent-portal-page #add-property-btn {
+            margin-top: 0.75rem;
+            border-color: rgba(121, 236, 215, 0.25);
+            background: rgba(121, 236, 215, 0.06);
+            color: var(--agent-accent);
+        }
+
+        .agent-portal-page #add-property-btn:hover,
+        .agent-portal-page #add-property-btn:focus-visible {
+            border-color: var(--agent-accent);
+            background: rgba(121, 236, 215, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .agent-portal-page .content-area {
+            min-height: calc(100vh - 9.3rem);
+            padding: clamp(1rem, 3vw, 2rem);
+            border-radius: 1.1rem;
+        }
+
+        .agent-portal-page .content-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.45rem;
+            padding-bottom: 1.1rem;
+            border-bottom: 1px solid var(--agent-line);
+        }
+
+        .agent-portal-page .content-heading h1 {
+            margin: 0;
+            color: var(--agent-ink);
+            font-family: Inter, sans-serif;
+            font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
+        .agent-portal-page .content-heading p {
+            margin: 0.35rem 0 0;
+            color: var(--agent-muted);
+            font-size: 0.88rem;
+        }
+
+        .agent-portal-page .content-heading .content-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.38rem 0.65rem;
+            border: 1px solid rgba(121, 236, 215, 0.2);
+            border-radius: 999px;
+            background: var(--agent-accent-soft);
+            color: var(--agent-accent);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .agent-portal-page .content-heading .content-status::before {
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 999px;
+            background: currentColor;
+            box-shadow: 0 0 0 0.2rem rgba(121, 236, 215, 0.11);
+            content: "";
+        }
+
+        .agent-portal-page #listings-list > p,
+        .agent-portal-page #inquiries-list > p {
+            padding: 2.5rem 1rem !important;
+            border: 1px dashed var(--agent-line);
+            border-radius: 0.9rem;
+            background: rgba(4, 20, 37, 0.25);
+            color: var(--agent-muted) !important;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .agent-portal-page .listing-card {
+            display: grid;
+            grid-template-columns: 8.6rem minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1.1rem;
+            min-width: 0;
+            margin-bottom: 0.85rem;
+            padding: 0.85rem;
+            border: 1px solid var(--agent-line);
+            border-radius: 0.95rem;
+            background: rgba(5, 23, 42, 0.42);
+            transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .agent-portal-page .listing-card:hover {
+            border-color: rgba(121, 236, 215, 0.33);
+            background: rgba(14, 39, 64, 0.8);
+            box-shadow: 0 12px 27px rgba(0, 0, 0, 0.13);
+            transform: translateY(-2px);
+        }
+
+        .agent-portal-page .listing-img {
+            width: 8.6rem;
+            height: 6.2rem;
+            border: 1px solid rgba(209, 233, 247, 0.15);
+            border-radius: 0.72rem;
+            object-fit: cover;
+        }
+
+        .agent-portal-page .listing-info {
+            min-width: 0;
+        }
+
+        .agent-portal-page .listing-info h4 {
+            overflow: hidden;
+            margin: 0 0 0.38rem !important;
+            color: var(--agent-ink);
+            font-family: Inter, sans-serif;
+            font-size: 1rem !important;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .agent-portal-page .listing-info p {
+            overflow: hidden;
+            margin: 0 !important;
+            color: var(--agent-muted) !important;
+            font-size: 0.85rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .agent-portal-page .listing-info p[style*="secondary"] {
+            margin-bottom: 0.28rem !important;
+            color: var(--agent-accent) !important;
+            font-weight: 700;
+        }
+
+        .agent-portal-page .listing-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .agent-portal-page .action-btn {
+            display: inline-flex;
+            min-width: 5.5rem;
+            min-height: 2.35rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.42rem;
+            padding: 0.56rem 0.7rem;
+            border: 1px solid var(--agent-line);
+            border-radius: 0.62rem;
+            background: rgba(255, 255, 255, 0.02);
+            color: #c9d8e6;
+            font: 600 0.75rem/1 Inter, sans-serif;
+            cursor: pointer;
+            transition: border-color 180ms ease, color 180ms ease, background 180ms ease, transform 180ms ease;
+        }
+
+        .agent-portal-page .action-btn:hover,
+        .agent-portal-page .action-btn:focus-visible {
+            border-color: rgba(121, 236, 215, 0.58);
+            background: var(--agent-accent-soft);
+            color: var(--agent-accent);
+            outline: none;
+            transform: translateY(-1px);
+        }
+
+        .agent-portal-page .action-btn.delete-btn {
+            border-color: rgba(255, 132, 132, 0.27);
+            color: #ffb0b0;
+        }
+
+        .agent-portal-page .action-btn.delete-btn:hover,
+        .agent-portal-page .action-btn.delete-btn:focus-visible {
+            border-color: #ff9898;
+            background: rgba(255, 96, 96, 0.12);
+            color: #ffd0d0;
+        }
+
+        .agent-portal-page .inquiry-card {
+            margin-bottom: 0.8rem;
+            padding: 1.1rem;
+            border: 1px solid var(--agent-line);
+            border-radius: 0.92rem;
+            background: rgba(5, 23, 42, 0.42);
+            transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+        }
+
+        .agent-portal-page .inquiry-card:hover {
+            border-color: rgba(121, 236, 215, 0.3);
+            background: rgba(14, 39, 64, 0.76);
+            transform: translateY(-1px);
+        }
+
+        .agent-portal-page .inquiry-card h4 {
+            margin: 0;
+            color: var(--agent-ink);
+            font-family: Inter, sans-serif;
+            font-size: 0.96rem;
+            font-weight: 700;
+        }
+
+        .agent-portal-page .inquiry-card span {
+            color: var(--agent-muted);
+            font-size: 0.75rem;
+        }
+
+        .agent-portal-page .inquiry-card p {
+            color: var(--agent-muted);
+            font-size: 0.87rem;
+            line-height: 1.65;
+        }
+
+        .agent-portal-page .inquiry-card p[style*="secondary"],
+        .agent-portal-page .inquiry-card a {
+            color: var(--agent-accent) !important;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .agent-portal-page .inquiry-card a:hover,
+        .agent-portal-page .inquiry-card a:focus-visible {
+            color: #b1faeb !important;
+            outline: none;
+            text-decoration: underline;
+        }
+
+        .agent-portal-page .modal {
+            position: fixed;
+            z-index: 100;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(2, 12, 25, 0.74);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .agent-portal-page .modal-content {
+            width: min(100%, 47rem);
+            max-height: min(90vh, 54rem);
+            overflow: auto;
+            padding: clamp(1.2rem, 3vw, 2rem);
+            border: 1px solid rgba(183, 222, 240, 0.2);
+            border-radius: 1.15rem;
+            background: linear-gradient(145deg, rgba(21, 52, 81, 0.98), rgba(8, 27, 48, 0.99));
+            box-shadow: 0 26px 75px rgba(0, 0, 0, 0.42);
+        }
+
+        .agent-portal-page .modal-content h2 {
+            margin: 0;
+            color: var(--agent-ink);
+            font-family: Inter, sans-serif;
+            font-size: clamp(1.28rem, 2.5vw, 1.65rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
+        .agent-portal-page .modal-subtitle {
+            margin: 0.5rem 0 1.5rem;
+            color: var(--agent-muted);
+            font-size: 0.87rem;
+        }
+
+        .agent-portal-page .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .agent-portal-page .form-group {
+            min-width: 0;
+        }
+
+        .agent-portal-page .full-width {
             grid-column: 1 / -1;
         }
 
-        /* Inquiries */
-        .inquiry-card {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--glass-border);
+        .agent-portal-page .form-group label {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: #cbdbe9;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
         }
 
-        .inquiry-card:last-child {
-            border-bottom: none;
+        .agent-portal-page .form-group input,
+        .agent-portal-page .form-group select,
+        .agent-portal-page .form-group textarea {
+            width: 100%;
+            min-height: 2.9rem;
+            padding: 0.72rem 0.82rem;
+            border: 1px solid var(--agent-line);
+            border-radius: 0.68rem;
+            background: rgba(1, 17, 33, 0.38);
+            color: var(--agent-ink);
+            font-family: Inter, sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
         }
-        
-        /* DESKTOP (>= 1025px) */
-        @media (min-width: 1025px) {
-            .dashboard-container {
-                display: grid;
-                grid-template-columns: 300px 1fr;
-                padding: 0 2rem;
-            }
-            .sidebar {
+
+        .agent-portal-page .form-group textarea {
+            min-height: 7.5rem;
+            resize: vertical;
+        }
+
+        .agent-portal-page .form-group select option {
+            background: #112d4b;
+            color: var(--agent-ink);
+        }
+
+        .agent-portal-page .form-group input::placeholder,
+        .agent-portal-page .form-group textarea::placeholder {
+            color: #6f879d;
+        }
+
+        .agent-portal-page .form-group input:focus,
+        .agent-portal-page .form-group select:focus,
+        .agent-portal-page .form-group textarea:focus {
+            border-color: var(--agent-accent);
+            background: rgba(1, 17, 33, 0.64);
+            box-shadow: 0 0 0 3px rgba(121, 236, 215, 0.12);
+            outline: none;
+        }
+
+        .agent-portal-page .file-picker {
+            padding: 0.4rem;
+            border: 1px dashed rgba(184, 219, 238, 0.28);
+            border-radius: 0.74rem;
+            background: rgba(0, 16, 31, 0.22);
+        }
+
+        .agent-portal-page .file-picker input[type="file"] {
+            min-height: 0;
+            padding: 0.45rem;
+            border: 0;
+            background: transparent;
+            color: var(--agent-muted);
+            font-size: 0.82rem;
+        }
+
+        .agent-portal-page .file-picker input[type="file"]::file-selector-button {
+            margin-right: 0.7rem;
+            padding: 0.5rem 0.7rem;
+            border: 1px solid rgba(121, 236, 215, 0.55);
+            border-radius: 0.52rem;
+            background: rgba(121, 236, 215, 0.09);
+            color: var(--agent-accent);
+            font: 600 0.74rem/1 Inter, sans-serif;
+            cursor: pointer;
+        }
+
+        .agent-portal-page .preview-grid {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.65rem;
+            margin-top: 0.75rem;
+        }
+
+        .agent-portal-page .modal-note {
+            margin: 0 0 0.5rem;
+            color: var(--agent-muted);
+            font-size: 0.79rem;
+            line-height: 1.55;
+        }
+
+        .agent-portal-page #img-error {
+            margin: 0.55rem 0 0;
+            color: #ffb3b3;
+            font-size: 0.8rem;
+        }
+
+        .agent-portal-page .modal-actions {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1.45rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--agent-line);
+        }
+
+        .agent-portal-page .modal-actions .btn {
+            display: inline-flex;
+            min-height: 2.9rem;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 0.95rem;
+            border-radius: 0.68rem;
+            font-size: 0.78rem;
+        }
+
+        .agent-portal-page .modal-actions .btn-fill {
+            border-color: #79ecd7;
+            background: linear-gradient(135deg, #86efdc, #4cd1ba);
+            color: #052238;
+        }
+
+        .agent-portal-page .modal-actions .btn-fill:hover,
+        .agent-portal-page .modal-actions .btn-fill:focus-visible {
+            background: linear-gradient(135deg, #9cf7e5, #59dac2);
+            box-shadow: 0 8px 20px rgba(75, 207, 183, 0.18);
+        }
+
+        .agent-portal-page button:disabled {
+            cursor: wait;
+            opacity: 0.58;
+            transform: none !important;
+        }
+
+        @media (max-width: 1024px) {
+            .agent-portal-page .dashboard-container {
+                display: flex;
                 flex-direction: column;
-                overflow-x: visible;
-                position: sticky;
-                top: 100px;
-                height: fit-content;
+                width: min(100% - 2rem, 1400px);
             }
-            .sidebar h3 { display: block; }
-            
-            .listing-card { flex-direction: row; }
-            .listing-img { width: 150px; height: 100px; }
-            
-            .listing-actions { flex-direction: column; }
-            .action-btn { flex: auto; }
-            
-            .form-grid { grid-template-columns: 1fr 1fr; }
+
+            .agent-portal-page .sidebar {
+                position: static;
+                display: flex;
+                width: 100%;
+                align-items: center;
+                gap: 0.5rem;
+                overflow-x: auto;
+                padding: 0.6rem;
+                scrollbar-width: thin;
+            }
+
+            .agent-portal-page .sidebar-heading {
+                display: none;
+            }
+
+            .agent-portal-page .menu-item {
+                width: auto;
+                min-width: max-content;
+                margin: 0;
+            }
+
+            .agent-portal-page #add-property-btn {
+                margin: 0 0 0 0.25rem;
+            }
+
+            .agent-portal-page .content-area {
+                min-height: 65vh;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .agent-portal-page .agent-nav,
+            .agent-portal-page .dashboard-container {
+                width: min(100% - 1.2rem, 1400px);
+            }
+
+            .agent-portal-page .agent-nav {
+                min-height: 66px;
+            }
+
+            .agent-portal-page .agent-identity {
+                display: none;
+            }
+
+            .agent-portal-page .content-area {
+                padding: 1rem;
+                border-radius: 0.95rem;
+            }
+
+            .agent-portal-page .content-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .agent-portal-page .listing-card {
+                grid-template-columns: 5.7rem minmax(0, 1fr);
+                gap: 0.8rem;
+            }
+
+            .agent-portal-page .listing-img {
+                width: 5.7rem;
+                height: 5.7rem;
+            }
+
+            .agent-portal-page .listing-actions {
+                grid-column: 1 / -1;
+                flex-direction: row;
+            }
+
+            .agent-portal-page .action-btn {
+                flex: 1;
+            }
+
+            .agent-portal-page .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .agent-portal-page .full-width {
+                grid-column: auto;
+            }
+
+            .agent-portal-page .modal {
+                align-items: end;
+                padding: 0;
+            }
+
+            .agent-portal-page .modal-content {
+                width: 100%;
+                max-height: 92vh;
+                border-right: 0;
+                border-bottom: 0;
+                border-left: 0;
+                border-radius: 1.1rem 1.1rem 0 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .agent-portal-page *,
+            .agent-portal-page *::before,
+            .agent-portal-page *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 
-<body>
-    <header>
-        <nav>
-            <div class="logo">Luxe<span>Estate</span> Agent</div>
-            <div>
-                <span id="agent-name" style="margin-right: 1rem; color: var(--secondary);">Agent</span>
-                <button id="logout-btn" class="btn" style="padding: 0.5rem 1rem;">Logout</button>
+<body class="agent-portal-page">
+    <header class="agent-header">
+        <nav class="agent-nav" aria-label="Agent portal navigation">
+            <div class="logo" aria-label="LuxeEstate agent portal">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-key"></i></span>
+                <span>Luxe<span>Estate</span><small class="brand-context">Agent portal</small></span>
+            </div>
+            <div class="agent-actions">
+                <div class="agent-identity">
+                    <small>Signed in as</small>
+                    <span id="agent-name">Agent</span>
+                </div>
+                <button id="logout-btn" class="btn" type="button"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Logout</button>
             </div>
         </nav>
     </header>
 
     <div class="dashboard-container">
-        <aside class="sidebar">
-            <h3>Menu</h3>
-            <div class="menu-item active" data-tab="listings">
-                <i class="fas fa-home"></i> My Listings
-            </div>
-            <div class="menu-item" data-tab="inquiries">
-                <i class="fas fa-envelope"></i> Inquiries
-            </div>
-            <div class="menu-item" id="add-property-btn">
-                <i class="fas fa-plus"></i> Add New Property
-            </div>
+        <aside class="sidebar" aria-label="Agent dashboard sections">
+            <div class="sidebar-heading"><i class="fa-solid fa-compass" aria-hidden="true"></i><h3>Workspace</h3></div>
+            <button class="menu-item active" data-tab="listings" type="button">
+                <i class="fas fa-home" aria-hidden="true"></i><span>My listings</span>
+            </button>
+            <button class="menu-item" data-tab="inquiries" type="button">
+                <i class="fas fa-envelope" aria-hidden="true"></i><span>Inquiries</span>
+            </button>
+            <button class="menu-item" id="add-property-btn" type="button">
+                <i class="fas fa-plus" aria-hidden="true"></i><span>Add property</span>
+            </button>
         </aside>
 
         <main class="content-area">
-            <!-- Listings View -->
-            <div id="listings-view">
-                <h2 style="margin-bottom: 2rem;">My Properties</h2>
+            <section id="listings-view" aria-labelledby="listings-title">
+                <div class="content-heading">
+                    <div>
+                        <h1 id="listings-title">My properties</h1>
+                        <p>Keep your active portfolio up to date.</p>
+                    </div>
+                    <span class="content-status">Portfolio</span>
+                </div>
                 <div id="listings-list">
-                    <!-- Injected via JS -->
-                    <div style="text-align: center; color: #777; padding: 2rem;">Loading listings...</div>
+                    <p role="status">Loading listings...</p>
                 </div>
-            </div>
+            </section>
 
-            <!-- Inquiries View -->
-            <div id="inquiries-view" style="display: none;">
-                <h2 style="margin-bottom: 2rem;">Recent Inquiries</h2>
-                <div id="inquiries-list">
-                    <!-- Injected via JS -->
-                    <div style="text-align: center; color: #777; padding: 2rem;">Loading inquiries...</div>
+            <section id="inquiries-view" aria-labelledby="inquiries-title" style="display: none;">
+                <div class="content-heading">
+                    <div>
+                        <h1 id="inquiries-title">Recent inquiries</h1>
+                        <p>Every customer conversation in one place.</p>
+                    </div>
+                    <span class="content-status">Inbox</span>
                 </div>
-            </div>
+                <div id="inquiries-list">
+                    <p role="status">Loading inquiries...</p>
+                </div>
+            </section>
         </main>
     </div>
 
-    <!-- Add/Edit Property Modal -->
-    <div id="property-modal" class="modal">
+    <div id="property-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content">
-            <h2 id="modal-title" style="margin-bottom: 1.5rem;">Add New Property</h2>
+            <h2 id="modal-title">Add new property</h2>
+            <p class="modal-subtitle">Add the details buyers need to discover your listing.</p>
             <form id="property-form">
                 <input type="hidden" id="edit-id">
                 <div class="form-grid">
                     <div class="form-group full-width">
-                        <label>Title</label>
-                        <input type="text" id="prop-title" required>
+                        <label for="prop-title">Title</label>
+                        <input type="text" id="prop-title" placeholder="e.g. Sunlit apartment in Indiranagar" required>
                     </div>
                     <div class="form-group">
-                        <label>Type</label>
+                        <label for="prop-type">Property type</label>
                         <select id="prop-type" required>
                             <option value="Apartment">Apartment</option>
                             <option value="House">House</option>
@@ -265,315 +870,45 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Price (₹)</label>
-                        <input type="number" id="prop-price" required>
+                        <label for="prop-price">Price (₹)</label>
+                        <input type="number" id="prop-price" min="0" step="0.01" placeholder="0" required>
                     </div>
                     <div class="form-group full-width">
-                        <label>Location</label>
-                        <input type="text" id="prop-location" required>
+                        <label for="prop-location">Location</label>
+                        <input type="text" id="prop-location" placeholder="City, neighbourhood" required>
                     </div>
                     <div class="form-group">
-                        <label>Bedrooms</label>
-                        <input type="number" id="prop-beds" placeholder="e.g. 3">
+                        <label for="prop-beds">Bedrooms</label>
+                        <input type="number" id="prop-beds" min="0" max="100" step="1" placeholder="e.g. 3">
                     </div>
                     <div class="form-group">
-                        <label>Bathrooms</label>
-                        <input type="number" id="prop-baths" placeholder="e.g. 2">
+                        <label for="prop-baths">Bathrooms</label>
+                        <input type="number" id="prop-baths" min="0" max="100" step="1" placeholder="e.g. 2">
                     </div>
                     <div class="form-group full-width">
-                        <label>Property Images (Select up to 10)</label>
-                        <div id="file-input-group">
-                            <input type="file" id="prop-file" name="images" accept="image/*" multiple required>
+                        <label for="prop-file">Property images</label>
+                        <div id="file-input-group" class="file-picker">
+                            <input type="file" id="prop-file" name="images" accept="image/jpeg,image/png,image/webp,image/gif" multiple required>
                         </div>
-                        <div id="img-preview-container"
-                            style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; display: none;">
-                            <!-- Previews will be injected here -->
-                        </div>
-                        <p id="img-error" style="color: #ff4d4d; font-size: 0.85rem; margin-top: 5px; display: none;">
-                            <i class="fas fa-exclamation-circle"></i> Invalid image file(s).
-                        </p>
+                        <div id="img-preview-container" class="preview-grid" style="display: none;"></div>
+                        <p id="img-error" role="alert" style="display: none;"></p>
                     </div>
                     <div class="form-group full-width">
-                        <label>Description</label>
-                        <textarea id="prop-desc" rows="4" required></textarea>
+                        <p class="modal-note">You can upload up to 10 JPEG, PNG, WebP, or GIF images, up to 5 MB each. When editing, new images replace the existing set.</p>
+                        <label for="prop-desc">Description</label>
+                        <textarea id="prop-desc" rows="4" placeholder="Describe the space, amenities, and location." required></textarea>
                     </div>
                 </div>
-                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="button" class="btn" id="cancel-modal" style="flex: 1;">Cancel</button>
-                    <button type="submit" class="btn btn-fill" style="flex: 1;">Save Property</button>
+                <div class="modal-actions">
+                    <button type="button" class="btn" id="cancel-modal">Cancel</button>
+                    <button type="submit" class="btn btn-fill">Save property</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        const token = localStorage.getItem('agentToken');
-        if (!token) window.location.href = '/agent-login.html';
-
-        const rawName = localStorage.getItem('agentName') || 'Agent';
-        const rawId = localStorage.getItem('agentIdString');
-        document.getElementById('agent-name').textContent = rawId ? `${rawName} (${rawId})` : rawName;
-
-        // Tabs
-        const tabs = document.querySelectorAll('.menu-item[data-tab]');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.menu-item').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-
-                const view = tab.dataset.tab;
-                document.getElementById('listings-view').style.display = view === 'listings' ? 'block' : 'none';
-                document.getElementById('inquiries-view').style.display = view === 'inquiries' ? 'block' : 'none';
-
-                if (view === 'listings') loadListings();
-                if (view === 'inquiries') loadInquiries();
-            });
-        });
-
-        // Logout
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('agentToken');
-            localStorage.removeItem('agentName');
-            window.location.href = '/agent-login.html';
-        });
-
-        // Load Listings
-        async function loadListings() {
-            try {
-                const res = await fetch('/api/agent/properties', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const props = await res.json();
-                const container = document.getElementById('listings-list');
-
-                if (props.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; color: #777; padding: 2rem;">No properties found. Add your first listing!</div>';
-                    return;
-                }
-
-                container.innerHTML = props.map(p => `
-                    <div class="listing-card">
-                        <img src="${p.image || 'https://via.placeholder.com/150'}" class="listing-img" alt="${p.title}">
-                        <div class="listing-info">
-                            <h4 style="color: white; margin-bottom: 0.5rem; font-size: 1.1rem;">${p.title}</h4>
-                            <p style="color: var(--secondary); margin-bottom: 0.5rem;">₹${p.price?.toLocaleString('en-IN')}</p>
-                            <p style="color: #aaa; font-size: 0.9rem;">${p.location}</p>
-                        </div>
-                        <div class="listing-actions">
-                            <button class="action-btn" onclick="editProperty('${p._id}')"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="action-btn delete-btn" onclick="deleteProperty('${p._id}')"><i class="fas fa-trash"></i> Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // Load Inquiries
-        async function loadInquiries() {
-            try {
-                const res = await fetch('/api/agent/messages', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const msgs = await res.json();
-                const container = document.getElementById('inquiries-list');
-
-                if (msgs.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; color: #777; padding: 2rem;">No inquiries yet.</div>';
-                    return;
-                }
-
-                container.innerHTML = msgs.map(m => `
-                    <div class="inquiry-card">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <h4 style="color: white;">${m.name}</h4>
-                            <span style="color: #666; font-size: 0.8rem;">${new Date(m.timestamp).toLocaleDateString()}</span>
-                        </div>
-                        <p style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Re: ${m.propertyId?.title || 'Unknown Property'}</p>
-                        <p style="color: #ccc; margin-bottom: 0.5rem;">"${m.message}"</p>
-                        <a href="mailto:${m.email}" style="color: var(--secondary); font-size: 0.9rem;">Reply to ${m.email}</a>
-                    </div>
-                `).join('');
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // Modal Logic
-        const modal = document.getElementById('property-modal');
-        const form = document.getElementById('property-form');
-
-        document.getElementById('add-property-btn').addEventListener('click', () => {
-            document.getElementById('modal-title').textContent = 'Add New Property';
-            document.getElementById('edit-id').value = '';
-            form.reset();
-            document.getElementById('img-preview-container').style.display = 'none'; // Hide preview
-            document.getElementById('prop-file').setAttribute('required', 'true'); // Require image for new
-            modal.style.display = 'flex';
-        });
-
-        document.getElementById('cancel-modal').addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        window.onclick = (e) => {
-            if (e.target == modal) modal.style.display = 'none';
-        }
-
-        // Save Property (Add/Edit)
-        // Save Property (Add/Edit)
-        // Save Property (Add/Edit)
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('edit-id').value;
-            const method = id ? 'PUT' : 'POST';
-            const url = id ? `/api/properties/${id}` : '/api/properties';
-
-            const formData = new FormData();
-            formData.append('title', document.getElementById('prop-title').value);
-            formData.append('type', document.getElementById('prop-type').value);
-            formData.append('price', document.getElementById('prop-price').value);
-            formData.append('location', document.getElementById('prop-location').value);
-            formData.append('description', document.getElementById('prop-desc').value);
-            const beds = document.getElementById('prop-beds').value;
-            if (beds) formData.append('beds', beds);
-            const baths = document.getElementById('prop-baths').value;
-            if (baths) formData.append('baths', baths);
-
-            // Handle Images - Multiple Files
-            const fileInput = document.getElementById('prop-file');
-            if (fileInput.files.length > 0) {
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    formData.append('images', fileInput.files[i]);
-                }
-            } else if (method === 'POST') {
-                alert("Please select at least one image file.");
-                return;
-            }
-
-            try {
-                const res = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                        // Content-Type: multipart/form-data is set automatically by fetch
-                    },
-                    body: formData
-                });
-
-                if (res.ok) {
-                    modal.style.display = 'none';
-                    loadListings();
-                } else {
-                    const errData = await res.json();
-                    const errorMsg = errData.error && typeof errData.error === 'object' ? JSON.stringify(errData.error) : (errData.error || 'Unknown error');
-                    alert('Failed to save property: ' + errorMsg);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('An error occurred while saving.');
-            }
-        });
-
-
-
-        // File Preview for Multiple Images
-        document.getElementById('prop-file').addEventListener('change', function () {
-            const container = document.getElementById('img-preview-container');
-            container.innerHTML = '';
-            container.style.display = 'grid';
-            document.getElementById('img-error').style.display = 'none';
-
-            if (this.files.length > 0) {
-                Array.from(this.files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.width = '100%';
-                        img.style.height = '100px';
-                        img.style.objectFit = 'cover';
-                        img.style.borderRadius = 'var(--radius-sm)';
-                        img.style.border = '1px solid var(--glass-border)';
-                        container.appendChild(img);
-                    }
-                    reader.readAsDataURL(file);
-                });
-            } else {
-                container.style.display = 'none';
-            }
-        });
-
-        // Delete Property
-        async function deleteProperty(id) {
-            if (!confirm('Are you sure you want to delete this listing?')) return;
-
-            try {
-                const res = await fetch(`/api/properties/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (res.ok) loadListings();
-            } catch (err) {
-                console.error(err);
-            }
-        }
-
-        // Edit Property (Populate Form)
-        // Edit Property (Populate Form)
-        window.editProperty = async (id) => {
-            try {
-                const res = await fetch(`/api/properties/${id}`);
-                const prop = await res.json();
-
-                document.getElementById('modal-title').textContent = 'Edit Property';
-                document.getElementById('edit-id').value = prop._id;
-                document.getElementById('prop-title').value = prop.title;
-                document.getElementById('prop-type').value = prop.type;
-                document.getElementById('prop-price').value = prop.price;
-                document.getElementById('prop-location').value = prop.location;
-                // Note: File input cannot be set programmatically for security reasons.
-                // We show the current image in preview instead.
-                document.getElementById('prop-desc').value = prop.description;
-                document.getElementById('prop-beds').value = prop.beds || '';
-                document.getElementById('prop-baths').value = prop.baths || '';
-
-                // Show existing images
-                const container = document.getElementById('img-preview-container');
-                container.innerHTML = '';
-
-                const allImages = prop.images && prop.images.length > 0 ? prop.images : (prop.image ? [prop.image] : []);
-
-                if (allImages.length > 0) {
-                    container.style.display = 'grid';
-                    allImages.forEach(src => {
-                        const img = document.createElement('img');
-                        img.src = src;
-                        img.style.width = '100%';
-                        img.style.height = '100px';
-                        img.style.objectFit = 'cover';
-                        img.style.borderRadius = 'var(--radius-sm)';
-                        img.style.border = '1px solid var(--glass-border)';
-                        container.appendChild(img);
-                    });
-                }
-
-                // Remove required attribute from file input since we have an existing image
-                document.getElementById('prop-file').removeAttribute('required');
-
-                modal.style.display = 'flex';
-            } catch (err) {
-                console.error(err);
-                alert('Failed to load property details.');
-            }
-        };
-
-
-
-        // Init
-        loadListings();
-    </script>
+    <script src="js/common.js"></script>
+    <script src="js/agent.js"></script>
 </body>
 
 </html>
