@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "Real Estate website(FULLSTACK PROJECT)/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "Real Estate website(FULLSTACK PROJECT)/server.js"
+    }
+  ]
+}
