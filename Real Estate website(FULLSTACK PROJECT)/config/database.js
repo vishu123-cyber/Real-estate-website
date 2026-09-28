@@ -11,7 +11,21 @@ async function connectDatabase() {
       connectTimeoutMS: 5000
     }).finally(() => { connectionPromise = undefined; });
   }
-  await connectionPromise;
+  try {
+    await connectionPromise;
+  } catch (error) {
+    const serverErrors = [...(error.reason?.servers?.values() || [])]
+      .map(server => ({
+        name: server.error?.name || null,
+        code: server.error?.code || server.error?.cause?.code || null
+      }));
+    console.error('MongoDB connection failed', {
+      name: error.name,
+      code: error.code || error.cause?.code || null,
+      serverErrors
+    });
+    throw error;
+  }
   return mongoose.connection;
 }
 
