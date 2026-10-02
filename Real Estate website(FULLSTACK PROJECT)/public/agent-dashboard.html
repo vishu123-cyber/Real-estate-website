@@ -713,6 +713,21 @@
         }
 
         @media (max-width: 640px) {
+            .agent-portal-page .sidebar {
+                flex-wrap: wrap;
+                overflow: visible;
+            }
+
+            .agent-portal-page .menu-item {
+                flex: 1 1 auto;
+                justify-content: center;
+            }
+
+            .agent-portal-page #add-property-btn {
+                flex-basis: 100%;
+                margin: 0;
+            }
+
             .agent-portal-page .agent-nav,
             .agent-portal-page .dashboard-container {
                 width: min(100% - 1.2rem, 1400px);
