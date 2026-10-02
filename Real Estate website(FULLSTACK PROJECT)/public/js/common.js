@@ -94,11 +94,20 @@
         return fallback;
     }
     function bindContact(form, propertyId) {
+        if (!Object.keys(sessions).some(role => token(role))) {
+            form.querySelector('button[type="submit"]').textContent = 'Sign in to send enquiry';
+            status(form.querySelector('[data-contact-status]'), 'Please sign in before sending an enquiry.');
+        }
         form.addEventListener('submit', async event => {
             event.preventDefault();
             const button = form.querySelector('button[type="submit"]');
             if (button.disabled) return;
             const output = form.querySelector('[data-contact-status]');
+            const role = Object.keys(sessions).find(role => token(role));
+            if (!role) {
+                login('user');
+                return;
+            }
             const name = form.elements.name.value.trim();
             const email = form.elements.email.value.trim();
             const message = form.elements.message.value.trim();
@@ -106,7 +115,7 @@
             button.disabled = true;
             status(output, 'Sending your message...');
             try {
-                await request('/api/properties/messages', { method: 'POST', ...json({ name, email, message, ...(propertyId ? { propertyId } : {}) }) });
+                await request('/api/properties/messages', { method: 'POST', ...json({ name, email, message, ...(propertyId ? { propertyId } : {}) }) }, role);
                 form.reset();
                 status(output, 'Message sent successfully. We will get back to you using your email.');
             } catch (error) {

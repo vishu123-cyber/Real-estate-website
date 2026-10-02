@@ -86,7 +86,7 @@ router.get('/', async (req, res) => {
     res.json(await Property.find(query).populate('agentId', 'name email phone agentIdString').sort({ _id: -1 }));
 });
 
-router.post('/messages', async (req, res) => {
+router.post('/messages', authenticate, async (req, res) => {
     const body = req.body || {};
     const data = {
         name: stringValue(body.name, 'Name', { required: true, max: 100 }),

@@ -10,7 +10,7 @@ A full stack real estate application for browsing homes, managing property listi
 - Search by location, property type, and budget.
 - View property details and map locations when coordinates are provided.
 - Register and sign in as a buyer; save favorite properties.
-- Send general or property enquiries using a name, email address, and message. Visitors can send enquiries without logging in.
+- Send general or property enquiries using a name, email address, and message after signing in. Visitors must log in before sending enquiries.
 - Register as an agent with contact details and a license ID; administrator approval is required before agent login.
 - Create, edit, and delete listings through the agent dashboard.
 - View enquiries associated with an agent's properties.
