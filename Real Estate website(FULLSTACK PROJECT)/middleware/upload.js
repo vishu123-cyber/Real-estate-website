@@ -1,21 +1,15 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-const { randomUUID } = require('crypto');
+const images = require('../services/imageStorage');
 
-const uploadsDir = path.resolve(__dirname, '../public/uploads');
-fs.mkdirSync(uploadsDir, { recursive: true });
+const maxTotalBytes = 4 * 1024 * 1024;
 const imageTypes = new Map([
     ['.jpg', 'image/jpeg'], ['.jpeg', 'image/jpeg'],
     ['.png', 'image/png'], ['.gif', 'image/gif'], ['.webp', 'image/webp']
 ]);
-const storage = multer.diskStorage({
-    destination(req, file, callback) { callback(null, uploadsDir); },
-    filename(req, file, callback) { callback(null, 'images-' + randomUUID() + path.extname(file.originalname).toLowerCase()); }
-});
-const upload = multer({
-    storage,
-    limits: { fileSize: 5 * 1024 * 1024, files: 10, fields: 20, fieldSize: 32 * 1024 },
+const parse = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: maxTotalBytes, files: 10, fields: 20, fieldSize: 32 * 1024 },
     fileFilter(req, file, callback) {
         const extension = path.extname(file.originalname).toLowerCase();
         if (imageTypes.get(extension) !== file.mimetype) return callback(Object.assign(new Error('Upload JPG, PNG, GIF, or WebP images only'), { status: 400 }));
@@ -23,12 +17,18 @@ const upload = multer({
     }
 }).array('images', 10);
 
-// Only remove files created by this request, never existing listing images.
-upload.cleanup = async function cleanup(files = []) {
-    await Promise.all(files.map(async file => {
-        if (typeof file.path !== 'string' || path.dirname(path.resolve(file.path)) !== uploadsDir) return;
-        try { await fs.promises.unlink(file.path); }
-        catch (error) { if (error.code !== 'ENOENT') console.error('Unable to remove failed upload:', error.code); }
-    }));
-};
+function upload(req, res, next) {
+    if (Number(req.headers['content-length']) > maxTotalBytes + 128 * 1024) {
+        return next(Object.assign(new Error('Choose images totaling 4 MB or less per save.'), { status: 413 }));
+    }
+    parse(req, res, error => {
+        if (!error && (req.files || []).reduce((sum, file) => sum + file.size, 0) > maxTotalBytes) {
+            error = Object.assign(new Error('Choose images totaling 4 MB or less per save.'), { status: 413 });
+        }
+        next(error);
+    });
+}
+upload.store = images.store;
+upload.cleanup = images.cleanup;
+upload.remove = images.remove;
 module.exports = upload;

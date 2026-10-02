@@ -113,7 +113,7 @@ router.post('/', ...manageProperties, async (req, res, next) => {
         await receiveImages(req, res);
         const data = propertyValues(req.body || {}, true);
         if (req.files?.length) {
-            data.images = req.files.map(file => '/uploads/' + file.filename);
+            data.images = await upload.store(req.files);
             data.image = data.images[0];
         }
         if (req.user.role === 'agent') data.agentId = req.user.userId;
@@ -130,11 +130,13 @@ router.put('/:id', ...manageProperties, ownedProperty, async (req, res, next) =>
         await receiveImages(req, res);
         const updates = propertyValues(req.body || {}, false);
         if (req.files?.length) {
-            updates.images = req.files.map(file => '/uploads/' + file.filename);
+            updates.images = await upload.store(req.files);
             updates.image = updates.images[0];
         }
+        const previousImages = [req.property.image, ...(req.property.images || [])].filter(Boolean);
         Object.assign(req.property, updates);
         await req.property.save();
+        await upload.remove(previousImages.filter(url => ![req.property.image, ...(req.property.images || [])].includes(url)));
         res.json(req.property);
     } catch (error) {
         await upload.cleanup(req.files);
@@ -144,6 +146,7 @@ router.put('/:id', ...manageProperties, ownedProperty, async (req, res, next) =>
 
 router.delete('/:id', ...manageProperties, ownedProperty, async (req, res) => {
     await req.property.deleteOne();
+    await upload.remove([req.property.image, ...(req.property.images || [])].filter(Boolean));
     await User.updateMany({ favorites: req.property._id }, { $pull: { favorites: req.property._id } });
     res.json({ message: 'Property deleted' });
 });

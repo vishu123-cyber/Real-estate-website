@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let message = '';
         if (selected.length > 10) message = 'Choose no more than 10 images.';
         else if (selected.some(file => !['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type))) message = 'Choose JPEG, PNG, WebP, or GIF images.';
-        else if (selected.some(file => file.size > 5 * 1024 * 1024)) message = 'Each image must be 5 MB or smaller.';
+        else if (selected.reduce((sum, file) => sum + file.size, 0) > 4 * 1024 * 1024) message = 'Choose images totaling 4 MB or less per save.';
         files.setCustomValidity(message);
         if (message) Estate.status(fileError, message, true); else fileError.style.display = 'none';
         return !message;

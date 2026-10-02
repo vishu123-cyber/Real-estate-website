@@ -13,11 +13,14 @@
     "verify": "node verify_data.js",
     "test": "node --test --test-concurrency=1 test/*.test.js"
   },
-  "engines": { "node": ">=22.0.0" },
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vercel/blob": "^2.8.0",
     "axios": "^1.13.5",
     "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
