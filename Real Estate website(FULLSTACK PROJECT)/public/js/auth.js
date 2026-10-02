@@ -40,8 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.role === 'agent') {
                 localStorage.setItem('agentToken', data.token);
                 localStorage.setItem('agentName', data.username || 'Agent');
-                if (data.agentIdString) localStorage.setItem('agentIdString', data.agentIdString);
-                else localStorage.removeItem('agentIdString');
+                localStorage.removeItem('agentIdString');
                 location.assign('/agent-dashboard.html');
             } else if (data.role === 'admin') {
                 localStorage.setItem('adminToken', data.token);

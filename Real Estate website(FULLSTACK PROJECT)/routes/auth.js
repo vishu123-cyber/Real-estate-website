@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { randomInt } = require('crypto');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -14,7 +13,7 @@ function passwordValue(value, signup = false) {
 }
 function session(user) {
     const token = jwt.sign({ userId: user._id.toString(), role: user.role }, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
-    return { token, username: user.username, role: user.role, agentIdString: user.agentIdString };
+    return { token, username: user.username, role: user.role };
 }
 router.post('/signup', async (req, res) => {
     const body = req.body || {};
@@ -27,19 +26,12 @@ router.post('/signup', async (req, res) => {
     const phone = stringValue(body.phone, 'Phone', { required: role === 'agent', max: 30 });
     if (phone && !/^[+\d\s().-]{7,30}$/.test(phone)) throw httpError(400, 'Enter a valid phone number');
     let licenseNumber;
-    let agentIdString;
     if (role === 'agent') {
         licenseNumber = stringValue(body.licenseNumber, 'License number', { required: true, min: 10, max: 30 });
         if (!/^[a-z\d\-/\s]{10,30}$/i.test(licenseNumber)) throw httpError(400, 'License number may contain letters, numbers, spaces, hyphens, or slashes');
-        // Use a large random range so agent identifiers do not run out.
-        for (let attempt = 0; attempt < 10; attempt++) {
-            const candidate = 'AGT' + randomInt(10000000, 100000000);
-            if (!(await User.exists({ agentIdString: candidate }))) { agentIdString = candidate; break; }
-        }
-        if (!agentIdString) throw httpError(503, 'Please try registering again');
     }
     if (await User.exists({ $or: [{ email }, { username }] })) throw httpError(409, 'Username or email already exists');
-    const user = await User.create({ username, email, password, role, name, phone, licenseNumber, agentIdString, status: role === 'agent' ? 'pending' : 'approved' });
+    const user = await User.create({ username, email, password, role, name, phone, licenseNumber, status: role === 'agent' ? 'pending' : 'approved' });
     if (role === 'agent') return res.status(201).json({ success: true, message: 'Registration successful. Your account is pending admin approval.', isPending: true });
     res.status(201).json(session(user));
 });

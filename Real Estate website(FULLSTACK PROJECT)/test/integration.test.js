@@ -102,6 +102,20 @@ test('real estate API works end to end using an isolated test database', { timeo
     let unownedProperty;
     const missingId = new mongoose.Types.ObjectId().toString();
 
+    await t.test('legacy generated agent IDs and their index are removed on connection', async () => {
+        const users = mongoose.connection.collection('users');
+        const legacy = await users.insertOne({ username: 'legacy-agent', role: 'agent', agentIdString: 'AGT39498064', name: 'Existing Agent' });
+        await users.createIndex({ agentIdString: 1 }, { unique: true, sparse: true });
+        await disconnectDatabase();
+        await connectDatabase();
+        const cleaned = await mongoose.connection.collection('users').findOne({ _id: legacy.insertedId });
+        assert.equal(Object.hasOwn(cleaned, 'agentIdString'), false);
+        assert.equal(cleaned.name, 'Existing Agent');
+        const indexes = await mongoose.connection.collection('users').indexes();
+        assert.equal(indexes.some(index => index.name === 'agentIdString_1'), false);
+        await mongoose.connection.collection('users').deleteOne({ _id: legacy.insertedId });
+    });
+
     await t.test('health and static frontend are served', async () => {
         const health = expectStatus(await request('GET', '/api/health'), 200);
         assert.equal(health.status, 'ok');
@@ -164,7 +178,9 @@ test('real estate API works end to end using an isolated test database', { timeo
         assert.equal(approval.agent?.password, undefined);
         const approved = expectStatus(await request('POST', '/api/auth/login', { body: agentCredentials }), 200);
         assert.equal(approved.role, 'agent');
-        assert.match(approved.agentIdString, /^AGT/);
+        assert.equal(Object.hasOwn(approved, 'agentIdString'), false);
+        const storedAgent = await mongoose.connection.collection('users').findOne({ _id: new mongoose.Types.ObjectId(agentId) });
+        assert.equal(Object.hasOwn(storedAgent, 'agentIdString'), false);
         agentToken = approved.token;
 
         const otherCredentials = { ...agentCredentials, username: 'other-agent', email: 'other-agent@example.test', licenseNumber: 'TEST-LICENSE-456' };

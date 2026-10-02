@@ -4,11 +4,20 @@ const { mongodbUri } = require('./index');
 let connectionPromise;
 
 async function connectDatabase() {
-  if (mongoose.connection.readyState === 1) return mongoose.connection;
+  if (!connectionPromise && mongoose.connection.readyState === 1) return mongoose.connection;
   if (!connectionPromise) {
     connectionPromise = mongoose.connect(mongodbUri, {
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 5000
+    }).then(async () => {
+      // Retire the legacy generated ID from existing accounts, including Atlas.
+      const users = mongoose.connection.collection('users');
+      await users.updateMany({ agentIdString: { $exists: true } }, { $unset: { agentIdString: '' } });
+      try {
+        await users.dropIndex('agentIdString_1');
+      } catch (error) {
+        if (![26, 27].includes(error.code)) throw error;
+      }
     }).finally(() => { connectionPromise = undefined; });
   }
   try {

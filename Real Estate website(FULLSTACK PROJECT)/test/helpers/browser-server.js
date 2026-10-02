@@ -91,7 +91,7 @@ async function start() {
     await User.create({
         username: 'test-agent', email: 'agent@example.test', password: 'agent-password-123',
         role: 'agent', status: 'approved', name: 'Test Agent', phone: '9876543210',
-        licenseNumber: 'TEST-LICENSE-123', agentIdString: 'AGT9001'
+        licenseNumber: 'TEST-LICENSE-123'
     });
     server = await new Promise((resolve, reject) => {
         const listener = app.listen(3001, '127.0.0.1', () => resolve(listener));

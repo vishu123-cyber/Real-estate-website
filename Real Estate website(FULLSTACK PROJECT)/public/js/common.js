@@ -2,10 +2,11 @@
     'use strict';
     const sessions = {
         user: ['userToken', 'username'],
-        agent: ['agentToken', 'agentName', 'agentIdString'],
+        agent: ['agentToken', 'agentName'],
         admin: ['adminToken']
     };
     const loginPages = { user: '/login.html', agent: '/agent-login.html', admin: '/admin-login.html' };
+    localStorage.removeItem('agentIdString');
     const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[character]);

@@ -83,7 +83,7 @@ router.get('/', async (req, res) => {
         query.type = req.query.type;
     }
     if (req.query.maxPrice !== undefined && req.query.maxPrice !== '') query.price = { $lte: numberValue(req.query.maxPrice, 'Maximum price') };
-    res.json(await Property.find(query).populate('agentId', 'name email phone agentIdString').sort({ _id: -1 }));
+    res.json(await Property.find(query).populate('agentId', 'name email phone').sort({ _id: -1 }));
 });
 
 router.post('/messages', authenticate, async (req, res) => {
@@ -103,7 +103,7 @@ router.post('/messages', authenticate, async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     validateId(req.params.id, 'property ID');
-    const property = await Property.findById(req.params.id).populate('agentId', 'name email phone agentIdString');
+    const property = await Property.findById(req.params.id).populate('agentId', 'name email phone');
     if (!property) throw httpError(404, 'Property not found');
     res.json(property);
 });
