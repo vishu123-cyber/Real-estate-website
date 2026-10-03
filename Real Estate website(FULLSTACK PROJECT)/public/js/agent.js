@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     byId('add-property-btn').onclick = () => {
         resetForm(); byId('modal-title').textContent = 'Add New Property';
-        files.required = true; modal.style.display = 'flex'; byId('prop-title').focus();
+        files.required = true; modal.style.display = 'flex'; window.showPropertyMapPicker(); byId('prop-title').focus();
     };
     const closeModal = () => { modal.style.display = 'none'; };
     byId('cancel-modal').onclick = closeModal;
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 byId('prop-status').value = property.status || 'available'; byId('prop-amenities').value = (property.amenities || []).join(', ');
                 byId('prop-lat').value = property.coordinates?.lat ?? ''; byId('prop-lng').value = property.coordinates?.lng ?? '';
                 showPreview((property.images?.length ? property.images : [property.image]).filter(Boolean).map(Estate.imageURL));
-                modal.style.display = 'flex'; byId('prop-title').focus();
+                modal.style.display = 'flex'; window.showPropertyMapPicker(); byId('prop-title').focus();
             }
         } catch (error) { alert(error.message); }
         finally { button.disabled = false; }

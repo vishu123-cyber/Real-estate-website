@@ -336,6 +336,14 @@ test('real estate API works end to end using an isolated test database', { timeo
         if (inquiries.length) assert.equal(expectStatus(await request('PATCH', `/api/agent/messages/${inquiries[0]._id}`, { token: agentToken, body: { status: 'contacted', agentNotes: 'Follow up tomorrow' } }), 200).status, 'contacted');
     });
 
+    await t.test('saved searches with no filters survive reload and can be managed', async () => {
+        const saved = expectStatus(await request('POST', '/api/saved-searches', { token: userToken, body: { name: 'All homes', filters: {} } }), 201);
+        const searches = expectStatus(await request('GET', '/api/saved-searches', { token: userToken }), 200);
+        assert.ok(searches.some(search => search._id === saved._id));
+        expectStatus(await request('PATCH', `/api/saved-searches/${saved._id}/seen`, { token: userToken }), 200);
+        expectStatus(await request('DELETE', `/api/saved-searches/${saved._id}`, { token: userToken }), 200);
+    });
+
     await t.test('agent rejection revokes existing access and deleting a listing cleans favorites', async () => {
         expectStatus(await request('PUT', `/api/admin/reject-agent/${agentId}`, { token: adminToken }), 200);
         expectError(await request('POST', '/api/auth/login', { body: agentCredentials }), 401, 403);

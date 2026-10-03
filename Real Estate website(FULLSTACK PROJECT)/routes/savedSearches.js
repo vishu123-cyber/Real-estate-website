@@ -5,6 +5,7 @@ const { validateId, httpError, stringValue } = require('../middleware/validation
 const router = Router();
 router.use(authenticate, requireRoles('user'));
 function queryFor(filters) {
+    filters = filters || {};
     const query = { $or: [{ status: 'available' }, { status: { $exists: false } }] };
     if (filters.location) query.location = { $regex: filters.location.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), $options: 'i' };
     if (filters.type) query.type = filters.type;

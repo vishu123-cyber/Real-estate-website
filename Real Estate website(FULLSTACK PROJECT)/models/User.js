@@ -11,7 +11,7 @@ const userSchema = new Schema({
     licenseNumber: { type: String, trim: true, maxlength: 30 },
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: function () { return this.role === 'agent' ? 'pending' : 'approved'; } },
     favorites: [{ type: Schema.Types.ObjectId, ref: 'Property' }],
-    savedSearches: [{ name: { type: String, required: true, maxlength: 80 }, filters: new Schema({ location: String, type: String, minPrice: Number, maxPrice: Number, minBeds: Number, amenity: String }, { _id: false }), createdAt: { type: Date, default: Date.now }, lastSeenAt: { type: Date, default: Date.now } }]
+    savedSearches: [{ name: { type: String, required: true, maxlength: 80 }, filters: { type: new Schema({ location: String, type: String, minPrice: Number, maxPrice: Number, minBeds: Number, amenity: String }, { _id: false, minimize: false }), default: () => ({}) }, createdAt: { type: Date, default: Date.now }, lastSeenAt: { type: Date, default: Date.now } }]
 }, { toJSON: { transform: hidePassword }, toObject: { transform: hidePassword } });
 userSchema.pre('save', async function () {
     if (this.isModified('password')) this.password = await bcrypt.hash(this.password, 12);

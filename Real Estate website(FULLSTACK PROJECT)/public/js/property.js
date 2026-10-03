@@ -150,5 +150,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         Estate.bindContact(document.getElementById('property-contact-form'), id);
         loading.style.display = 'none';
         document.getElementById('property-content').style.display = 'block';
+        const mapElement = document.getElementById('property-detail-map');
+        if (hasCoordinates && window.L) {
+            mapElement.hidden = false;
+            const map = L.map(mapElement).setView([coordinates.lat, coordinates.lng], 16);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+            L.marker([coordinates.lat, coordinates.lng]).addTo(map);
+            requestAnimationFrame(() => map.invalidateSize());
+        } else if (!hasCoordinates) {
+            document.getElementById('map-location-text').append(' The agent has not selected an exact map pin yet.');
+        }
     } catch (error) { Estate.status(loading, error.message, true); }
 });

@@ -9,6 +9,7 @@
     <title>Property details | LuxeEstate</title>
     <style>html{background:#04111b;color-scheme:dark}body{margin:0;background:#071a27;color:#b8c8d0;font-family:Manrope,Inter,system-ui,sans-serif}</style>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
@@ -123,6 +124,7 @@
                         <p class="section-kicker">Location</p>
                         <h2>See the neighbourhood</h2>
                         <p id="map-location-text"></p>
+                        <div id="property-detail-map" style="height: 240px; width: 100%; margin-bottom: 16px;" hidden></div>
                         <button type="button" id="get-directions-btn" class="btn btn-secondary"><i class="fas fa-map-location-dot" aria-hidden="true"></i> Get directions</button>
                     </section>
                 </aside>
@@ -166,6 +168,7 @@
     </footer>
 
     <script src="js/common.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/listings.js"></script>
     <script src="js/property.js"></script>
 </body>
