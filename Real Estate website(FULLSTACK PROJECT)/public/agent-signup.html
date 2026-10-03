@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#081a2e">
     <title>Join as an Agent - LuxeEstate</title>
@@ -320,6 +321,11 @@
             }
 
             .portal-auth .auth-story {
+                display: block;
+                margin-bottom: 1.5rem;
+            }
+
+            .portal-auth .auth-story > :not(.brand-link) {
                 display: none;
             }
 
@@ -350,7 +356,7 @@
         <div class="auth-layout">
             <section class="auth-story" aria-label="Join the LuxeEstate agent network">
                 <a class="brand-link" href="/" aria-label="Return to LuxeEstate home">
-                    <span class="brand-symbol" aria-hidden="true">LE</span>
+                    <span class="brand-symbol" aria-hidden="true"><img src="/logo.png" alt="" aria-hidden="true"></span>
                     <span>Luxe<span>Estate</span></span>
                 </a>
                 <p class="auth-kicker">Partner with LuxeEstate</p>

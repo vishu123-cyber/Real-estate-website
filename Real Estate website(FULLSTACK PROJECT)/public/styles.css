@@ -4911,3 +4911,27 @@ footer.site-footer .footer-bottom i {
     justify-self: center;
   }
 }
+
+/* Use the same image mark on public pages and account portals. */
+.logo img,
+.brand-symbol img {
+  object-fit: contain;
+}
+
+.logo .brand-mark img,
+.portal-auth .brand-symbol img {
+  display: block;
+  width: 100%;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: #fff;
+  filter: none;
+}
+
+.logo .brand-mark,
+.portal-auth .brand-symbol {
+  flex-shrink: 0;
+}
