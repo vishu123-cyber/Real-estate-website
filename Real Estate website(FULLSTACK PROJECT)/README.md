@@ -20,18 +20,18 @@ Open http://localhost:3000. On Windows PowerShell, use `npm.cmd` if the executio
 
 MongoDB defaults to `mongodb://127.0.0.1:27017/realestate`. For MongoDB Atlas or another instance, edit `MONGODB_URI` in `.env`. The server connects to MongoDB before accepting requests and reports startup failures. `GET /api/health` reports database readiness.
 
-If the database is empty, optionally add six sample listings:
+To add six Pune sample listings, run:
 
 ```powershell
 npm.cmd run seed
 ```
 
-Seeding adds missing samples without deleting or overwriting existing listings. Existing database data is never reset automatically.
+Seeding adds missing Pune samples without deleting or overwriting existing listings. Existing database data is never reset automatically. The homepage starts with Pune in the location search, and the map opens over Pune.
 
 ## Accounts and workflows
 
-- **Buyers:** `/signup.html` creates a buyer account; `/login.html` signs in. Search/filter listings, open their details, save favorites, and send property inquiries.
-- **Agents:** register at `/agent-signup.html` with a name, phone, and 10-30 character license number. An administrator must approve the account before login at `/agent-login.html`. The dashboard manages the agent's own properties, photos, and inquiries.
+- **Buyers:** `/signup.html` creates a buyer account; `/login.html` signs in. Search/filter listings by price range, bedrooms, amenity, type, and status; use the map for listings with coordinates; save favorites and searches; review in-app matches from listings created after a search was saved; send inquiries; and request or cancel viewings.
+- **Agents:** register at `/agent-signup.html` with a name, phone, and 10-30 character license number. An administrator must approve the account before login at `/agent-login.html`. The dashboard manages the agent's own properties, photos, listing status, amenities, map coordinates, inquiries with notes/status, and viewing requests.
 - **Administrator:** open `/admin-login.html`. The username is the `ADMIN_USERNAME` value in `.env` (generated as `admin`); the password is `ADMIN_PASSWORD` in that same file. The previous hardcoded `admin123` password is no longer used. Approve/reject agents, view listings, remove listings, and read/delete inquiries.
 
 Use a password of at least 8 characters for buyer/agent accounts. An agent can edit or delete only their own listings. Rejected agents immediately lose API access, including with previously issued tokens. Administrators can manage all listings.

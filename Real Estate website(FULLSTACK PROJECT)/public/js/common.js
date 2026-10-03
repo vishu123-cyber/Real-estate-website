@@ -155,5 +155,27 @@
         });
     }
     window.Estate = { escape, clearSession, login, token, requireSession, request, json, price, imageURL, fixImages, status, returnPath, bindContact, bindMobileNavigation };
+    document.querySelectorAll('input[type="password"]').forEach(input => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'password-field';
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.append(input);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'password-toggle';
+        button.textContent = 'Show';
+        button.setAttribute('aria-label', 'Show password');
+        button.setAttribute('aria-pressed', 'false');
+        button.setAttribute('aria-controls', input.id);
+        button.addEventListener('click', () => {
+            const visible = input.type === 'password';
+            input.type = visible ? 'text' : 'password';
+            button.textContent = visible ? 'Hide' : 'Show';
+            button.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+            button.setAttribute('aria-pressed', String(visible));
+            input.focus();
+        });
+        wrapper.append(button);
+    });
     bindMobileNavigation();
 })();

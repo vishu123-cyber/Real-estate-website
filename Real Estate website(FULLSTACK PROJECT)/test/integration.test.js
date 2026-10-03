@@ -320,6 +320,22 @@ test('real estate API works end to end using an isolated test database', { timeo
         expectStatus(await request('DELETE', `/api/properties/${uploaded._id}`, { token: agentToken }), 200);
     });
 
+    await t.test('advanced search, saved alerts, viewing appointments, and inquiry tracking work', async () => {
+        const updated = expectStatus(await request('PUT', `/api/properties/${ownedProperty._id}`, { token: agentToken, body: { status: 'available', amenities: ['Parking', 'Garden'], beds: 3 } }), 200);
+        assert.deepEqual(updated.amenities, ['Parking', 'Garden']);
+        const found = expectStatus(await request('GET', '/api/properties?minBeds=3&amenity=Parking&sort=price-low'), 200);
+        assert.ok(found.some(item => item._id === ownedProperty._id));
+        const saved = expectStatus(await request('POST', '/api/saved-searches', { token: userToken, body: { name: 'Garden homes', filters: { amenity: 'Garden' } } }), 201);
+        assert.ok(saved._id);
+        assert.equal(expectStatus(await request('GET', '/api/saved-searches', { token: userToken }), 200).length, 1);
+        const appointment = expectStatus(await request('POST', '/api/appointments', { token: userToken, body: { propertyId: ownedProperty._id, requestedAt: new Date(Date.now() + 86_400_000).toISOString() } }), 201);
+        assert.equal(appointment.status, 'requested');
+        assert.ok(expectStatus(await request('GET', '/api/appointments', { token: agentToken }), 200).some(item => item._id === appointment._id));
+        assert.equal(expectStatus(await request('PATCH', `/api/appointments/${appointment._id}`, { token: agentToken, body: { status: 'confirmed' } }), 200).status, 'confirmed');
+        const inquiries = expectStatus(await request('GET', '/api/agent/messages', { token: agentToken }), 200);
+        if (inquiries.length) assert.equal(expectStatus(await request('PATCH', `/api/agent/messages/${inquiries[0]._id}`, { token: agentToken, body: { status: 'contacted', agentNotes: 'Follow up tomorrow' } }), 200).status, 'contacted');
+    });
+
     await t.test('agent rejection revokes existing access and deleting a listing cleans favorites', async () => {
         expectStatus(await request('PUT', `/api/admin/reject-agent/${agentId}`, { token: adminToken }), 200);
         expectError(await request('POST', '/api/auth/login', { body: agentCredentials }), 401, 403);

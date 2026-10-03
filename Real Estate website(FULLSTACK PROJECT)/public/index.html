@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover thoughtfully chosen homes with LuxeEstate.">
-    <title>LuxeEstate | Find a place that feels like home</title>
+    <meta name="description" content="Explore homes and connect with local property agents across Pune with LuxeEstate.">
+    <title>LuxeEstate | Find your place in Pune</title>
     <style>html{background:#04111b;color-scheme:dark}body{margin:0;background:#071a27;color:#b8c8d0;font-family:Manrope,Inter,system-ui,sans-serif}</style>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,14 +44,14 @@
 
     <section class="hero">
         <div class="hero-copy">
-            <p class="eyebrow"><i class="fas fa-sparkles" aria-hidden="true"></i> Curated homes across India</p>
-            <h1>Find a place that feels like <em>home.</em></h1>
-            <p class="hero-lead">Explore considered spaces, trusted local expertise, and a smoother way to make your next move.</p>
+            <p class="eyebrow"><i class="fas fa-sparkles" aria-hidden="true"></i> Homes across Pune</p>
+            <h1>Find your place in <em>Pune.</em></h1>
+            <p class="hero-lead">Explore homes across Pune neighbourhoods, compare the details that matter, and connect with local agents.</p>
 
             <form id="search-form" class="search-container" aria-label="Search properties">
                 <label class="search-field search-location" for="location">
                     <span>Where</span>
-                    <input type="text" id="location" aria-label="Search by city" placeholder="City or neighbourhood">
+                    <input type="text" id="location" aria-label="Search Pune by neighbourhood" value="Pune" placeholder="Pune neighbourhood">
                 </label>
                 <label class="search-field" for="type">
                     <span>Home type</span>
@@ -76,11 +76,17 @@
                 <button type="submit" class="btn"><i class="fas fa-search" aria-hidden="true"></i><span>Search homes</span></button>
             </form>
 
-            <p class="hero-note"><i class="fas fa-shield-heart" aria-hidden="true"></i> Verified listings. Personal guidance. No pressure.</p>
+            <div class="extra-search" role="group" aria-label="More search filters">
+                <label class="extra-search__field" for="min-price"><span>Minimum price</span><input id="min-price" type="number" min="0" placeholder="Any price"></label>
+                <label class="extra-search__field" for="min-beds"><span>Bedrooms</span><input id="min-beds" type="number" min="0" max="100" placeholder="Any number"></label>
+                <label class="extra-search__field" for="amenity"><span>Amenity</span><select id="amenity"><option value="">Any amenity</option><option>Parking</option><option>Garden</option><option>Balcony</option><option>Pool</option><option>Gym</option><option>Security</option></select></label>
+                <label class="extra-search__field" for="listing-status"><span>Availability</span><select id="listing-status"><option value="">Any status</option><option value="available">Available</option><option value="under offer">Under offer</option><option value="sold">Sold</option><option value="rented">Rented</option></select></label>
+            </div>
+            <p class="hero-note"><i class="fas fa-location-dot" aria-hidden="true"></i> Browse Baner, Kothrud, Koregaon Park and more.</p>
             <div class="hero-stats" aria-label="LuxeEstate highlights">
-                <div class="hero-stat"><strong>1,200+</strong><span>homes placed</span></div>
-                <div class="hero-stat"><strong>15 yrs</strong><span>local insight</span></div>
-                <div class="hero-stat"><strong>4.9/5</strong><span>client rating</span></div>
+                <div class="hero-stat"><strong>Pune</strong><span>local focus</span></div>
+                <div class="hero-stat"><strong>Map</strong><span>neighbourhood search</span></div>
+                <div class="hero-stat"><strong>Direct</strong><span>agent contact</span></div>
             </div>
         </div>
     </section>
@@ -121,13 +127,17 @@
             </div>
             <div class="listing-toolbar-actions">
                 <label class="sort-control" for="listing-sort"><span>Sort by</span><select id="listing-sort"><option value="recommended">Recommended</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="newest">Newest first</option></select></label>
+                <button id="save-search" class="listing-tool-button" type="button"><i class="far fa-bookmark" aria-hidden="true"></i> Save search</button>
+                <button id="toggle-map" class="listing-tool-button" type="button" aria-pressed="false"><i class="fas fa-map" aria-hidden="true"></i> Map view</button>
                 <button id="clear-listing-filters" class="clear-filters" type="button"><i class="fas fa-rotate-left" aria-hidden="true"></i> Reset</button>
             </div>
         </div>
 
+        <div id="property-map" class="property-map" hidden aria-label="Property map"></div>
         <div id="property-grid" class="grid reveal" aria-live="polite">
             <!-- Properties are injected here -->
         </div>
+        <div class="buyer-tools"><section id="saved-searches" class="buyer-tools__panel" aria-live="polite" hidden></section><section id="buyer-appointments" class="buyer-tools__panel" aria-live="polite" hidden></section></div>
     </main>
 
     <section class="journey-section reveal" aria-labelledby="journey-title">
@@ -200,6 +210,7 @@
         <div class="footer-bottom"><span>&copy; 2026 LuxeEstate. Made for better moves.</span><a href="/">Return home <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></div>
     </footer>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/common.js"></script>
     <script src="js/listings.js"></script>
     <script src="js/experience.js"></script>

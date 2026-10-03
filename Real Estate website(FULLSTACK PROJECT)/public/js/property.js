@@ -8,6 +8,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const set = (id, value) => { document.getElementById(id).textContent = value; };
         set('prop-title', property.title); set('prop-location', property.location);
         set('prop-type', property.type); set('prop-price', Estate.price(property.price));
+        const statusBadge = document.createElement('p'); statusBadge.className = 'property-status-line'; statusBadge.textContent = `Status: ${property.status || 'available'}${property.amenities?.length ? ' · ' + property.amenities.join(', ') : ''}`; document.getElementById('prop-price').after(statusBadge);
+        const viewing = document.getElementById('viewing-form');
+        viewing.hidden = ['sold', 'rented'].includes(property.status);
+        viewing.addEventListener('submit', async event => {
+            event.preventDefault();
+            if (!Estate.token('user')) { Estate.login('user'); return; }
+            const status = document.getElementById('viewing-status');
+            try { await Estate.request('/api/appointments', { method: 'POST', ...Estate.json({ propertyId: id, requestedAt: new Date(document.getElementById('viewing-date').value).toISOString(), note: document.getElementById('viewing-note').value }) }, 'user'); status.textContent = 'Viewing requested. The agent will respond soon.'; viewing.reset(); }
+            catch (error) { status.textContent = error.message; }
+        });
         set('prop-desc', property.description || 'Contact the agent for more information.');
         for (const [id, value, label] of [['prop-beds', property.beds, 'Beds'], ['prop-baths', property.baths, 'Baths']]) {
             const feature = document.getElementById(id).closest('.feature');
@@ -23,6 +33,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('agent-name-line').hidden = false;
         }
         set('agent-contact', property.agentContact || agent.phone || agent.email || 'Send an inquiry using the form above.');
+        const whatsappLink = document.getElementById('whatsapp-agent');
+        const whatsappNumber = [agent.phone, property.agentContact].map(value => {
+            if (typeof value !== 'string' || !/^[+\d\s().-]+$/.test(value.trim())) return null;
+            const digits = value.replace(/\D/g, '');
+            if (digits.length === 10) return `91${digits}`;
+            if (digits.length === 12 && digits.startsWith('91')) return digits;
+            if (value.trim().startsWith('+') && digits.length >= 8 && digits.length <= 15) return digits;
+            return null;
+        }).find(Boolean);
+        if (whatsappNumber) {
+            const message = `Hi, I'm interested in ${property.title} in ${property.location}. Is it available? ${location.href}`;
+            whatsappLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            whatsappLink.setAttribute('aria-label', `Chat with the agent on WhatsApp about ${property.title}`);
+            whatsappLink.hidden = false;
+        }
         const locationLink = document.createElement('a');
         const coordinates = property.coordinates;
         const hasCoordinates = coordinates && Number.isFinite(coordinates.lat) && Number.isFinite(coordinates.lng);

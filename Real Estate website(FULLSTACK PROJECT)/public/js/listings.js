@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         location: document.getElementById('location'),
         type: document.getElementById('type'),
         price: document.getElementById('price'),
+        minPrice: document.getElementById('min-price'), minBeds: document.getElementById('min-beds'), amenity: document.getElementById('amenity'), status: document.getElementById('listing-status'),
         sort: document.getElementById('listing-sort'),
         resultCount: document.getElementById('listing-result-count'),
         clear: document.getElementById('clear-listing-filters'),
@@ -21,6 +22,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     let latestRequest = 0;
     let latestProperties = [];
     let activeQuickFilter = '';
+    let map;
+    let markers;
+    function updateMap(properties) {
+        const element = document.getElementById('property-map');
+        if (!element || element.hidden || !window.L) return;
+        if (!map) { map = L.map(element).setView([18.5204, 73.8567], 11); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map); markers = L.layerGroup().addTo(map); }
+        markers.clearLayers(); const bounds = [];
+        properties.forEach(property => { const { lat, lng } = property.coordinates || {}; if (!Number.isFinite(lat) || !Number.isFinite(lng)) return; const point = [lat, lng]; bounds.push(point); const link = document.createElement('a'); link.href = `/property.html?id=${encodeURIComponent(property._id)}`; link.textContent = `${property.title} · ${Estate.price(property.price)}`; const popup = document.createElement('span'); popup.append(link); L.marker(point).bindPopup(popup).addTo(markers); });
+        if (bounds.length) map.fitBounds(bounds, { padding: [25, 25], maxZoom: 13 }); map.invalidateSize();
+    }
+    async function loadSavedSearches() {
+        const box = document.getElementById('saved-searches'); if (!box || !Estate.token('user')) return;
+        box.hidden = false;
+        try { const searches = await Estate.request('/api/saved-searches', {}, 'user'); box.innerHTML = `<h3>Saved searches</h3>${searches.map(item => `<div><strong>${h(item.name)}</strong> · ${item.matches.length} new match(es) <button data-seen="${h(item._id)}" type="button">Mark seen</button> <button data-remove-search="${h(item._id)}" type="button">Remove</button>${item.matches.map(property => `<a href="/property.html?id=${encodeURIComponent(property._id)}">${h(property.title)}</a>`).join(' · ')}</div>`).join('') || '<p>No saved searches yet.</p>'}`; } catch (error) { box.textContent = error.message; }
+    }
+    async function loadAppointments() {
+        const box = document.getElementById('buyer-appointments'); if (!box || !Estate.token('user')) return;
+        box.hidden = false;
+        try { const appointments = await Estate.request('/api/appointments', {}, 'user'); box.innerHTML = `<h3>Your viewings</h3>${appointments.map(item => `<div><a href="/property.html?id=${encodeURIComponent(item.propertyId?._id || '')}">${h(item.propertyId?.title || 'Property')}</a> · ${h(new Date(item.requestedAt).toLocaleString())} · ${h(item.status)} ${item.status !== 'cancelled' ? `<button type="button" data-cancel-appointment="${h(item._id)}">Cancel</button>` : ''}</div>`).join('') || '<p>No viewing requests yet.</p>'}`; } catch (error) { box.textContent = error.message; }
+    }
 
     function updateAuth() {
         if (!auth) return;
@@ -95,6 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             controls.location?.value.trim() ||
             selectedType() ||
             controls.price?.value ||
+            controls.minPrice?.value || controls.minBeds?.value || controls.amenity?.value || controls.status?.value ||
             (controls.sort && controls.sort.value !== 'recommended')
         );
     }
@@ -178,6 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function render(properties) {
         const listings = sortProperties(properties.filter(Boolean));
         latestProperties = properties.filter(Boolean);
+        updateMap(latestProperties);
         grid.replaceChildren();
         updateResultCount(listings.length);
 
@@ -273,6 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (city) parameters.set('location', city);
         if (type) parameters.set('type', type);
         if (price) parameters.set('maxPrice', price);
+        for (const [key, control] of [['minPrice', controls.minPrice], ['minBeds', controls.minBeds], ['amenity', controls.amenity], ['status', controls.status]]) if (control?.value) parameters.set(key, control.value);
 
         updateQuickFilterState();
         updateClearControl();
@@ -292,9 +316,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function resetListingFilters() {
-        if (controls.location) controls.location.value = '';
+        if (controls.location) controls.location.value = 'Pune';
         if (controls.type) controls.type.value = '';
         if (controls.price) controls.price.value = '';
+        for (const control of [controls.minPrice, controls.minBeds, controls.amenity, controls.status]) if (control) control.value = '';
         if (controls.sort) controls.sort.value = 'recommended';
         activeQuickFilter = '';
         updateQuickFilterState();
@@ -339,6 +364,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadProperties();
     });
     controls.price?.addEventListener('change', loadProperties);
+    for (const control of [controls.minPrice, controls.minBeds, controls.amenity, controls.status]) control?.addEventListener('change', loadProperties);
+    document.getElementById('toggle-map')?.addEventListener('click', event => {
+        const element = document.getElementById('property-map');
+        const button = event.currentTarget;
+        element.hidden = !element.hidden;
+        button.setAttribute('aria-pressed', String(!element.hidden));
+        button.innerHTML = element.hidden ? '<i class="fas fa-map" aria-hidden="true"></i> Map view' : '<i class="fas fa-list" aria-hidden="true"></i> Hide map';
+        updateMap(latestProperties);
+    });
+    document.getElementById('save-search')?.addEventListener('click', async () => { if (!Estate.token('user')) { Estate.login('user'); return; } const name = prompt('Name this search'); if (!name) return; const filters = { location: controls.location.value.trim(), type: selectedType(), minPrice: controls.minPrice.value, maxPrice: controls.price.value, minBeds: controls.minBeds.value, amenity: controls.amenity.value }; try { await Estate.request('/api/saved-searches', { method: 'POST', ...Estate.json({ name, filters }) }, 'user'); await loadSavedSearches(); } catch (error) { alert(error.message); } });
+    document.getElementById('saved-searches')?.addEventListener('click', async event => { const id = event.target.dataset.seen || event.target.dataset.removeSearch; if (!id) return; try { await Estate.request(`/api/saved-searches/${id}${event.target.dataset.seen ? '/seen' : ''}`, { method: event.target.dataset.seen ? 'PATCH' : 'DELETE' }, 'user'); await loadSavedSearches(); } catch (error) { alert(error.message); } });
+    document.getElementById('buyer-appointments')?.addEventListener('click', async event => { const id = event.target.dataset.cancelAppointment; if (!id) return; try { await Estate.request(`/api/appointments/${id}`, { method: 'PATCH', ...Estate.json({ status: 'cancelled' }) }, 'user'); await loadAppointments(); } catch (error) { alert(error.message); } });
     controls.sort?.addEventListener('change', () => {
         updateClearControl();
         if (latestProperties.length) render(latestProperties);
@@ -369,4 +406,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateQuickFilterState();
     updateClearControl();
     await loadProperties();
+    await loadSavedSearches();
+    await loadAppointments();
 });

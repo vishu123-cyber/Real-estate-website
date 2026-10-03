@@ -7,6 +7,7 @@ const { authenticate, requireRoles } = require('../middleware/auth');
 const { validateId, httpError, stringValue, emailValue } = require('../middleware/validation');
 const router = Router();
 const propertyTypes = ['House', 'Apartment', 'Villa', 'Condo'];
+const amenities = ['Parking', 'Garden', 'Balcony', 'Pool', 'Gym', 'Security'];
 
 function numberValue(value, label, { min = 0, max = 1e15, integer = false } = {}) {
     if (!['string', 'number'].includes(typeof value) || (typeof value === 'string' && !value.trim())) throw httpError(400, label + ' must be a number');
@@ -35,6 +36,15 @@ function propertyValues(body, creating) {
     if (creating || Object.hasOwn(body, 'type')) {
         if (!propertyTypes.includes(body.type)) throw httpError(400, 'Choose House, Apartment, Villa, or Condo');
         values.type = body.type;
+    }
+    if (creating || Object.hasOwn(body, 'status')) {
+        if (body.status && !['available', 'under offer', 'sold', 'rented'].includes(body.status)) throw httpError(400, 'Choose a valid listing status');
+        values.status = body.status || 'available';
+    }
+    if (Object.hasOwn(body, 'amenities')) {
+        const selected = Array.isArray(body.amenities) ? body.amenities : String(body.amenities).split(',').filter(Boolean);
+        if (selected.length > amenities.length || selected.some(item => !amenities.includes(item))) throw httpError(400, 'Choose valid amenities');
+        values.amenities = [...new Set(selected)];
     }
     if (creating || Object.hasOwn(body, 'price')) values.price = numberValue(body.price, 'Price', { min: 1 });
     for (const field of ['beds', 'baths']) {
@@ -82,8 +92,23 @@ router.get('/', async (req, res) => {
         if (!propertyTypes.includes(req.query.type)) throw httpError(400, 'Choose a valid property type');
         query.type = req.query.type;
     }
-    if (req.query.maxPrice !== undefined && req.query.maxPrice !== '') query.price = { $lte: numberValue(req.query.maxPrice, 'Maximum price') };
-    res.json(await Property.find(query).populate('agentId', 'name email phone').sort({ _id: -1 }));
+    if (req.query.minPrice || req.query.maxPrice) {
+        query.price = {};
+        if (req.query.minPrice) query.price.$gte = numberValue(req.query.minPrice, 'Minimum price');
+        if (req.query.maxPrice) query.price.$lte = numberValue(req.query.maxPrice, 'Maximum price');
+    }
+    if (req.query.minBeds) query.beds = { $gte: numberValue(req.query.minBeds, 'Minimum bedrooms', { max: 100, integer: true }) };
+    if (req.query.amenity) {
+        if (!amenities.includes(req.query.amenity)) throw httpError(400, 'Choose a valid amenity');
+        query.amenities = req.query.amenity;
+    }
+    if (req.query.status) {
+        if (!['available', 'under offer', 'sold', 'rented'].includes(req.query.status)) throw httpError(400, 'Choose a valid listing status');
+        query.status = req.query.status;
+    }
+    const sorts = { newest: { _id: -1 }, 'price-low': { price: 1, _id: -1 }, 'price-high': { price: -1, _id: -1 } };
+    if (req.query.sort && !sorts[req.query.sort]) throw httpError(400, 'Choose a valid sort order');
+    res.json(await Property.find(query).populate('agentId', 'name email phone').sort(sorts[req.query.sort] || sorts.newest));
 });
 
 router.post('/messages', (req, res, next) => {

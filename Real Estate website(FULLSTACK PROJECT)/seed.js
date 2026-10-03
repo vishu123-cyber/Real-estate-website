@@ -6,100 +6,100 @@ connectDatabase()
 
         const sampleProperties = [
             {
-                title: "Luxury Sea Facing Apartment",
+                title: "Bright Apartment in Koregaon Park",
                 beds: 4, baths: 5,
-                location: "Marine Drive, Mumbai",
+                location: "Koregaon Park, Pune",
                 price: 150000000,
                 type: "Apartment",
-                description: "Experience the height of luxury in this stunning sea-facing apartment on Marine Drive. Featuring panoramic ocean views, floor-to-ceiling windows, and top-of-the-line Italian marble flooring. This 4-bedroom, 5-bath residence offers an open concept living area, perfect for entertaining.",
-                agentContact: "Rajesh Sharma: +91 98765 43210",
+                description: "Sample four-bedroom apartment with an open living area and room for a home office. Ask the listing agent for current availability and exact address.",
+                agentContact: "Send an enquiry for contact details",
                 image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
                 images: [
                     "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
                     "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
                     "https://images.unsplash.com/photo-1560448205-4d9b3e6bb6db?w=800"
                 ],
-                coordinates: { lat: 18.9438, lng: 72.8234 } // Mumbai
+                coordinates: { lat: 18.5362, lng: 73.8939 } // Approximate Koregaon Park area
             },
             {
-                title: "Modern Villa with Private Pool",
+                title: "Contemporary Villa in Baner",
                 beds: 5, baths: 6,
-                location: "Whitefield, Bangalore",
+                location: "Baner, Pune",
                 price: 85000000,
                 type: "Villa",
-                description: "Wake up to the sound of birds in this exquisite villa in a gated community. With a private swimming pool, landscaped garden, and modern architectural design, this is the ultimate luxury home. Features 5 bedrooms, 6 baths, and a spacious outdoor terrace.",
-                agentContact: "Priya Venkatesh: +91 99887 76655",
+                description: "Sample family villa with generous indoor space, a garden and a terrace. Ask the listing agent for current availability and exact address.",
+                agentContact: "Send an enquiry for contact details",
                 image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
                 images: [
                     "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
                     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800",
                     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800"
                 ],
-                coordinates: { lat: 12.9698, lng: 77.7499 } // Bangalore
+                coordinates: { lat: 18.5590, lng: 73.7868 } // Approximate Baner area
             },
             {
-                title: "Cozy Hill Station Cottage",
+                title: "Quiet Family Home in Kothrud",
                 beds: 3, baths: 2,
-                location: "Ooty, Tamil Nadu",
+                location: "Kothrud, Pune",
                 price: 35000000,
                 type: "House",
-                description: "This charming cottage offers a perfect retreat in the Nilgiris. Surrounded by tea gardens, it features a stone fireplace, wood beams, and a large deck. Ideal for summer vacations. 3 bedrooms, 2 baths.",
-                agentContact: "Anand Kumar: +91 91234 56789",
+                description: "Sample three-bedroom home with a practical layout and a separate study. Ask the listing agent for current availability and exact address.",
+                agentContact: "Send an enquiry for contact details",
                 image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800",
                 images: [
                     "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=800",
                     "https://images.unsplash.com/photo-1449844908441-8829872d2607?w=800",
                     "https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800"
                 ],
-                coordinates: { lat: 11.4100, lng: 76.6918 } // Ooty
+                coordinates: { lat: 18.5074, lng: 73.8077 } // Approximate Kothrud area
             },
             {
-                title: "High-Rise Apartment in Cyber City",
+                title: "City Apartment in Hinjawadi",
                 beds: 3, baths: 3,
-                location: "Gurgaon, Haryana",
+                location: "Hinjawadi, Pune",
                 price: 55000000,
                 type: "Apartment",
-                description: "A stylish high-rise apartment in the heart of Cyber City. High ceilings, smart home automation, and club amenities define this premium space. Steps away from offices, malls, and metro. 3 bedrooms, 3 baths.",
-                agentContact: "Vikram Singh: +91 98111 22233",
+                description: "Sample apartment with three bedrooms and flexible living space. Ask the listing agent for current availability and exact address.",
+                agentContact: "Send an enquiry for contact details",
                 image: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=800",
                 images: [
                     "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=800",
                     "https://images.unsplash.com/photo-1502005097973-f5424579c3d4?w=800",
                     "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800"
                 ],
-                coordinates: { lat: 28.4908, lng: 77.0915 } // Gurgaon
+                coordinates: { lat: 18.5913, lng: 73.7389 } // Approximate Hinjawadi area
             },
             {
-                title: "Spacious Family Home",
+                title: "Spacious Home in Hadapsar",
                 beds: 5, baths: 4,
-                location: "Banjara Hills, Hyderabad",
+                location: "Hadapsar, Pune",
                 price: 120000000,
                 type: "House",
-                description: "A beautiful independent house in the prestigious Banjara Hills. This 5-bedroom home features a large backyard, a modern kitchen, home theater, and servant quarters. Close to top international schools.",
-                agentContact: "Sania Mirza: +91 98444 55566",
+                description: "Sample five-bedroom home with space for a growing family and guests. Ask the listing agent for current availability and exact address.",
+                agentContact: "Send an enquiry for contact details",
                 image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
                 images: [
                     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
                     "https://images.unsplash.com/photo-1600607688969-95fb1e9fa6ca?w=800",
                     "https://images.unsplash.com/photo-1600566752355-d3e91122ab65?w=800"
                 ],
-                coordinates: { lat: 17.4126, lng: 78.4390 } // Hyderabad
+                coordinates: { lat: 18.5089, lng: 73.9260 } // Approximate Hadapsar area
             },
             {
-                title: "Premium Sea View Condo",
+                title: "Modern Condo in Viman Nagar",
                 beds: 3, baths: 3,
-                location: "Besant Nagar, Chennai",
+                location: "Viman Nagar, Pune",
                 price: 45000000,
                 type: "Condo",
-                description: "Enjoy breathtaking sea views from this modern condo near Elliot's Beach. It offers secure living with amenities including a gym, party hall, and 24/7 power backup. 3 bedrooms, 3 baths.",
-                agentContact: "Karthik Raja: +91 99444 33322",
+                description: "Sample three-bedroom condo with a modern floor plan. Ask the listing agent for current availability and exact address.",
+                agentContact: "Send an enquiry for contact details",
                 image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
                 images: [
                     "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
                     "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800",
                     "https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800"
                 ],
-                coordinates: { lat: 12.9996, lng: 80.2693 } // Chennai
+                coordinates: { lat: 18.5679, lng: 73.9143 } // Approximate Viman Nagar area
             }
         ];
 

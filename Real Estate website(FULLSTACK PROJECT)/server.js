@@ -29,6 +29,8 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/favorites', require('./routes/favorites'));
 app.use('/api/agent', require('./routes/agent'));
+app.use('/api/appointments', require('./routes/appointments'));
+app.use('/api/saved-searches', require('./routes/savedSearches'));
 app.use('/api', (req, res) => res.status(404).json({ error: 'API endpoint not found' }));
 app.use(express.static(config.publicDir));
 

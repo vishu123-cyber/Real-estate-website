@@ -4,6 +4,8 @@ const propertySchema = new Schema({
     location: { type: String, required: true, trim: true, maxlength: 200 },
     price: { type: Number, required: true, min: 1, max: 1e15 },
     type: { type: String, required: true, enum: ['House', 'Apartment', 'Villa', 'Condo'] },
+    status: { type: String, enum: ['available', 'under offer', 'sold', 'rented'], default: 'available' },
+    amenities: [{ type: String, enum: ['Parking', 'Garden', 'Balcony', 'Pool', 'Gym', 'Security'] }],
     description: { type: String, trim: true, maxlength: 10000 },
     beds: { type: Number, min: 0, max: 100, validate: Number.isInteger },
     baths: { type: Number, min: 0, max: 100, validate: Number.isInteger },
@@ -15,5 +17,5 @@ const propertySchema = new Schema({
         lat: { type: Number, min: -90, max: 90 },
         lng: { type: Number, min: -180, max: 180 }
     }
-});
+}, { timestamps: true });
 module.exports = model('Property', propertySchema);

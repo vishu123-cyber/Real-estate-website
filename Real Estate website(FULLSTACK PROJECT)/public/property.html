@@ -74,7 +74,7 @@
                         <span class="feature"><i class="fas fa-bed" aria-hidden="true"></i><span id="prop-beds">Beds</span></span>
                         <span class="feature"><i class="fas fa-bath" aria-hidden="true"></i><span id="prop-baths">Baths</span></span>
                         <span class="feature property-photo-fact"><i class="fas fa-images" aria-hidden="true"></i><span id="property-photo-count">Photo gallery</span></span>
-                        <span class="feature property-map-fact" id="property-map-fact" hidden><i class="fas fa-location-crosshairs" aria-hidden="true"></i><span>Map pin available</span></span>
+                        <span class="feature property-map-fact" id="property-map-fact" hidden><i class="fas fa-location-crosshairs" aria-hidden="true"></i><span>Map area available</span></span>
                     </div>
 
                     <section class="detail-description property-description" aria-labelledby="property-description-heading">
@@ -109,7 +109,14 @@
                             <button type="submit" id="contact-btn" class="btn">Send an enquiry <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
                             <p id="contact-status" data-contact-status aria-live="polite"></p>
                         </form>
+                        <form id="viewing-form" class="viewing-form">
+                            <p class="section-kicker">Visit in person</p><h3>Request a viewing</h3>
+                            <div class="form-group"><label for="viewing-date">Preferred date and time</label><input id="viewing-date" type="datetime-local" required></div>
+                            <div class="form-group"><label for="viewing-note">Note for the agent <span>(optional)</span></label><textarea id="viewing-note" maxlength="1000" rows="3" placeholder="Anything the agent should know?"></textarea></div>
+                            <button class="btn btn-secondary" type="submit"><i class="far fa-calendar" aria-hidden="true"></i> Request viewing</button><p id="viewing-status" role="status"></p>
+                        </form>
                         <div class="agent-contact-line property-contact-channel"><i class="fas fa-headset" aria-hidden="true"></i><span id="agent-contact">Agent contact</span></div>
+                        <a id="whatsapp-agent" class="btn whatsapp-agent" href="#" target="_blank" rel="noopener noreferrer" hidden><i class="fab fa-whatsapp" aria-hidden="true"></i> Chat on WhatsApp</a>
                     </section>
 
                     <section class="agent-box property-location-card">
