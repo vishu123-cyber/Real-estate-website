@@ -21,10 +21,10 @@ router.post('/login', (req, res) => {
     res.json({ token, success: true });
 });
 router.use(authenticate, requireRoles('admin'));
-router.get('/messages', async (req, res) => { res.json(await Message.find().sort({ timestamp: -1 })); });
+router.get('/messages', async (req, res) => { res.json(await Message.find({ propertyId: null }).sort({ timestamp: -1 })); });
 router.delete('/messages/:id', async (req, res) => {
     validateId(req.params.id, 'message ID');
-    if (!(await Message.findByIdAndDelete(req.params.id))) throw httpError(404, 'Message not found');
+    if (!(await Message.findOneAndDelete({ _id: req.params.id, propertyId: null }))) throw httpError(404, 'Message not found');
     res.json({ success: true, message: 'Message deleted' });
 });
 router.get('/agents', async (req, res) => {

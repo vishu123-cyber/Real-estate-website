@@ -272,10 +272,15 @@ test('real estate API works end to end using an isolated test database', { timeo
         expectError(await request('POST', '/api/properties/messages', { token: userToken, body: { ...contact, propertyId: 'invalid-id' } }), 400);
         expectError(await request('POST', '/api/properties/messages', { token: userToken, body: { ...contact, propertyId: missingId } }), 404);
         const adminMessages = expectStatus(await request('GET', '/api/admin/messages', { token: adminToken }), 200);
-        assert.equal(adminMessages.length, 3);
+        assert.equal(adminMessages.length, 1);
+        assert.ok(adminMessages.every(message => !message.propertyId));
+        expectError(await request('GET', '/api/agent/messages', { token: adminToken }), 403);
         const agentMessages = expectStatus(await request('GET', '/api/agent/messages', { token: agentToken }), 200);
         assert.equal(agentMessages.length, 1);
         assert.equal(agentMessages[0].propertyId._id, ownedProperty._id);
+        expectError(await request('DELETE', `/api/admin/messages/${agentMessages[0]._id}`, { token: adminToken }), 404);
+        const retainedMessages = expectStatus(await request('GET', '/api/agent/messages', { token: agentToken }), 200);
+        assert.equal(retainedMessages.length, 1);
         const otherMessages = expectStatus(await request('GET', '/api/agent/messages', { token: otherAgentToken }), 200);
         assert.equal(otherMessages.length, 1);
         assert.equal(otherMessages[0].propertyId._id, otherProperty._id);

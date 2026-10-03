@@ -95,7 +95,9 @@ router.post('/messages', authenticate, async (req, res) => {
     };
     if (body.propertyId !== undefined && body.propertyId !== null && body.propertyId !== '') {
         data.propertyId = validateId(body.propertyId, 'property ID');
-        if (!(await Property.exists({ _id: data.propertyId }))) throw httpError(404, 'Property not found');
+        const property = await Property.findById(data.propertyId).select('agentId');
+        if (!property) throw httpError(404, 'Property not found');
+        if (!property.agentId) throw httpError(409, 'This property has no assigned agent. Please use the general enquiry form to contact the administrator.');
     }
     await Message.create(data);
     res.status(201).json({ message: 'Message sent successfully' });
