@@ -262,9 +262,9 @@ test('real estate API works end to end using an isolated test database', { timeo
 
     await t.test('general and property inquiries reach the correct inboxes', async () => {
         const contact = { name: 'Interested Buyer', email: 'contact@example.test', message: 'Please share more information.' };
-        expectError(await request('POST', '/api/properties/messages', { body: contact }), 401);
-        expectError(await request('POST', '/api/properties/messages', { token: 'invalid-token', body: contact }), 401);
-        expectStatus(await request('POST', '/api/properties/messages', { token: userToken, body: contact }), 200, 201);
+        expectError(await request('POST', '/api/properties/messages', { body: { ...contact, propertyId: ownedProperty._id } }), 401);
+        expectError(await request('POST', '/api/properties/messages', { token: 'invalid-token', body: { ...contact, propertyId: ownedProperty._id } }), 401);
+        expectStatus(await request('POST', '/api/properties/messages', { body: contact }), 200, 201);
         expectStatus(await request('POST', '/api/properties/messages', { token: userToken, body: { ...contact, propertyId: ownedProperty._id } }), 200, 201);
         expectStatus(await request('POST', '/api/properties/messages', { token: userToken, body: { ...contact, propertyId: otherProperty._id } }), 200, 201);
         expectError(await request('POST', '/api/properties/messages', { token: userToken, body: { ...contact, email: 'invalid' } }), 400);

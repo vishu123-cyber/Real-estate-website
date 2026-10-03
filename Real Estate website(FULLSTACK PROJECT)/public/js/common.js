@@ -95,7 +95,7 @@
         return fallback;
     }
     function bindContact(form, propertyId) {
-        if (!Object.keys(sessions).some(role => token(role))) {
+        if (propertyId && !Object.keys(sessions).some(role => token(role))) {
             form.querySelector('button[type="submit"]').textContent = 'Sign in to send enquiry';
             status(form.querySelector('[data-contact-status]'), 'Please sign in before sending an enquiry.');
         }
@@ -104,8 +104,8 @@
             const button = form.querySelector('button[type="submit"]');
             if (button.disabled) return;
             const output = form.querySelector('[data-contact-status]');
-            const role = Object.keys(sessions).find(role => token(role));
-            if (!role) {
+            const role = propertyId ? Object.keys(sessions).find(role => token(role)) : undefined;
+            if (propertyId && !role) {
                 login('user');
                 return;
             }
